@@ -1,6 +1,15 @@
 import { FC, FormEvent, FormEventHandler, ReactNode } from 'react';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
+import { useAppDispatch, useAppSelector } from 'app/hooks';
+import {
+  decrement,
+  increment,
+  incrementByAmount,
+  incrementAsync,
+  incrementIfOdd,
+  selectCount
+} from 'features/counter/counterSlice';
 import styles from './login.module.less';
 
 interface Container {
@@ -56,10 +65,17 @@ const LoginForm: FC = () => {
 };
 
 const LoginContainer: FC<Container> = ({ children }) => {
+  const count = useAppSelector(selectCount);
+  const dispatch = useAppDispatch();
   return (
     <div className={styles.login_bg}>
       <div className={styles.login_container}>
-        <h1 className={styles.login_title}>Admin Name</h1>
+        <h1
+          className={styles.login_title}
+          onClick={() => dispatch(incrementIfOdd(5))}
+        >
+          Admin Name{count}
+        </h1>
         {children}
       </div>
     </div>
