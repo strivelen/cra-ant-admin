@@ -8,10 +8,16 @@ export interface Route {
 }
 
 interface Config {
+  apiBaseURL: string;
+  apiTimeout: number;
+  apiSessionKey: string;
   routes: Array<Route>;
 }
 
 const config: Config = {
+  apiBaseURL: 'https://jsonplaceholder.typicode.com',
+  apiTimeout: 30000,
+  apiSessionKey: 'psy-session',
   routes: [
     {
       path: '/',

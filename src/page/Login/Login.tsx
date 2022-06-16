@@ -1,10 +1,11 @@
-import { FC, FormEvent, FormEventHandler, ReactNode } from 'react';
+import { FC, FormEvent, FormEventHandler, ReactNode, useEffect } from 'react';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { setToken, login, selectToken } from 'features/user/userSlice';
+import { login, selectToken } from 'features/user/userSlice';
 import styles from './login.module.less';
 import { persistor } from 'app/store';
+import axios from 'util/axios';
 
 interface Container {
   children: ReactNode;
@@ -62,6 +63,14 @@ const LoginForm: FC = () => {
 const LoginContainer: FC<Container> = ({ children }) => {
   const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    (async () => {
+      const res = await axios.get('/todos/2');
+      // .catch((err) => console.log('login: ', err));
+      console.log('res: ', res);
+    })();
+  }, []);
   return (
     <div className={styles.login_bg}>
       <div className={styles.login_container}>

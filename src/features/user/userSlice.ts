@@ -7,13 +7,13 @@ import { PURGE } from 'redux-persist';
 export interface UserState {
   name: string | undefined;
   token: string | undefined;
-  status: 'loading' | 'idle' | 'failed';
+  isLogin: boolean;
 }
 
 const initialState: UserState = {
   name: undefined,
   token: undefined,
-  status: 'idle'
+  isLogin: false
 };
 
 export const login = createAsyncThunk(
@@ -35,25 +35,22 @@ export const userSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => {
-        state.status = 'loading';
-      })
       .addCase(
         login.fulfilled,
         (state, action: PayloadAction<{ name: string; token: string }>) => {
           const { name, token } = action.payload;
           state.name = name;
           state.token = token;
-          state.status = 'idle';
+          state.isLogin = true;
         }
       )
       .addCase(login.rejected, (state) => {
-        state.status = 'failed';
+        state.isLogin = false;
       })
       .addCase(PURGE, (state) => {
         state.name = undefined;
         state.token = undefined;
-        state.status = 'idle';
+        state.isLogin = false;
       });
   }
 });
