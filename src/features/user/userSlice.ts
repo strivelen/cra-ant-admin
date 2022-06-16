@@ -2,15 +2,16 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'app/store';
 import { fetchLogin } from './userAPI';
 import type { FetchLoginParams } from './userAPI';
+import { PURGE } from 'redux-persist';
 
 export interface UserState {
-  name: string;
+  name: string | undefined;
   token: string | undefined;
   status: 'loading' | 'idle' | 'failed';
 }
 
 const initialState: UserState = {
-  name: 'name',
+  name: undefined,
   token: undefined,
   status: 'idle'
 };
@@ -48,6 +49,11 @@ export const userSlice = createSlice({
       )
       .addCase(login.rejected, (state) => {
         state.status = 'failed';
+      })
+      .addCase(PURGE, (state) => {
+        state.name = undefined;
+        state.token = undefined;
+        state.status = 'idle';
       });
   }
 });

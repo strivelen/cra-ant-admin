@@ -4,6 +4,7 @@ import { Button } from 'antd';
 import { useAppDispatch, useAppSelector } from 'app/hooks';
 import { setToken, login, selectToken } from 'features/user/userSlice';
 import styles from './login.module.less';
+import { persistor } from 'app/store';
 
 interface Container {
   children: ReactNode;
@@ -66,7 +67,9 @@ const LoginContainer: FC<Container> = ({ children }) => {
       <div className={styles.login_container}>
         <h1
           className={styles.login_title}
-          onClick={() => dispatch(setToken('token123'))}
+          onClick={() => {
+            persistor.purge();
+          }}
         >
           Admin Name
         </h1>
