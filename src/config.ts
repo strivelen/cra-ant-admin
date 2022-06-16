@@ -32,7 +32,7 @@ const config: Config = {
       ]
     },
     { path: '/login', element: 'Login', file: 'page/Login' },
-    { path: '*', element: 'NotFound', file: 'page/404.tsx' }
+    { path: '*', element: 'NotFound', file: 'page/404' }
   ]
 };
 

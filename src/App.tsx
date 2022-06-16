@@ -1,5 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
-import Routes from 'router/routes';
+import Routes from 'app/routes';
 import { Provider } from 'react-redux';
 import { store, persistor } from 'app/store';
 import ErrorBoundary from 'component/ErrorBoundary';

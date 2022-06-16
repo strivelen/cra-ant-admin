@@ -1,6 +1,6 @@
 import { FC, Suspense } from 'react';
 import { useRoutes } from 'react-router-dom';
-import routes from './generateRoutes';
+import routes from 'util/generateRoutes';
 
 // const Layout = lazy(() => import('component/Layout'));
 // const Home = lazy(() => import('page/Home'));
