@@ -7,17 +7,27 @@ export interface Route {
   auth?: boolean;
 }
 
+interface PageOptions {
+  pageSize: number;
+}
+
 interface Config {
+  appName: string;
   apiBaseURL: string;
   apiTimeout: number;
   apiSessionKey: string;
+  pageOptions: PageOptions;
   routes: Array<Route>;
 }
 
 const config: Config = {
-  apiBaseURL: 'https://jsonplaceholder.typicode.com',
+  appName: 'Admin Name',
+  apiBaseURL: 'http://psyManageApi.lkha.net',
   apiTimeout: 30000,
-  apiSessionKey: 'psy-session',
+  apiSessionKey: 'psyweb-sessionkey',
+  pageOptions: {
+    pageSize: 12
+  },
   routes: [
     {
       path: '/',

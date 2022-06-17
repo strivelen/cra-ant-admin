@@ -1,26 +1,28 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'app/store';
-import { fetchLogin } from './userAPI';
-import type { FetchLoginParams } from './userAPI';
+import { fetchLogin } from 'app/api';
 import { PURGE } from 'redux-persist';
 
 export interface UserState {
-  name: string | undefined;
+  userinfo: object;
   token: string | undefined;
   isLogin: boolean;
 }
 
 const initialState: UserState = {
-  name: undefined,
+  userinfo: {},
   token: undefined,
   isLogin: false
 };
 
 export const login = createAsyncThunk(
   'user/fetchLogin',
-  async (params: FetchLoginParams) => {
-    const response = await fetchLogin(params);
-    return response.data;
+  async (params: object) => {
+    const response = (await fetchLogin(params)) as any as {
+      User: object;
+      SessionKey: string;
+    };
+    return response;
   }
 );
 
@@ -35,20 +37,17 @@ export const userSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(
-        login.fulfilled,
-        (state, action: PayloadAction<{ name: string; token: string }>) => {
-          const { name, token } = action.payload;
-          state.name = name;
-          state.token = token;
-          state.isLogin = true;
-        }
-      )
+      .addCase(login.fulfilled, (state, action) => {
+        const { User, SessionKey } = action.payload;
+        state.userinfo = User;
+        state.token = SessionKey;
+        state.isLogin = true;
+      })
       .addCase(login.rejected, (state) => {
         state.isLogin = false;
       })
       .addCase(PURGE, (state) => {
-        state.name = undefined;
+        state.userinfo = {};
         state.token = undefined;
         state.isLogin = false;
       });

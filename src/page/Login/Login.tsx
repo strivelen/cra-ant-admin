@@ -1,11 +1,10 @@
-import { FC, FormEvent, FormEventHandler, ReactNode, useEffect } from 'react';
+import { FC, FormEvent, FormEventHandler, ReactNode } from 'react';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
-import { useAppDispatch, useAppSelector } from 'app/hooks';
-import { login, selectToken } from 'features/user/userSlice';
+import { useAppDispatch } from 'app/hooks';
+import { login } from 'features/user/userSlice';
+import Config from 'app/config';
 import styles from './login.module.less';
-import { persistor } from 'app/store';
-import axios from 'util/axios';
 
 interface Container {
   children: ReactNode;
@@ -34,12 +33,14 @@ const LoginForm: FC = () => {
     const formData = new FormData(login_form);
     const user = formData.get('user') as string;
     const password = formData.get('password') as string;
-    dispatch(login({ username: user, password: password }));
+    dispatch(login({ email: user, password }));
   };
+
   return (
     <form id="login_form" onSubmit={onSubmit}>
       <LoginFormItem icon={<UserOutlined className={styles.icon} />}>
         <input
+          defaultValue="admin@psy.cn"
           autoComplete="off"
           type="text"
           placeholder="请输入用户名"
@@ -47,12 +48,14 @@ const LoginForm: FC = () => {
         />
       </LoginFormItem>
       <LoginFormItem icon={<UnlockOutlined className={styles.icon} />}>
-        <input type="password" placeholder="请输入密码" name="password" />
+        <input
+          defaultValue="123456"
+          type="password"
+          placeholder="请输入密码"
+          name="password"
+        />
       </LoginFormItem>
       {/* <div className={styles.forgot_password}>忘记密码？</div> */}
-      {/* <button type="submit" className={styles.submit}>
-        登录
-      </button> */}
       <Button type="primary" htmlType="submit" className={styles.submit}>
         登录
       </Button>
@@ -61,30 +64,10 @@ const LoginForm: FC = () => {
 };
 
 const LoginContainer: FC<Container> = ({ children }) => {
-  const token = useAppSelector(selectToken);
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    (async () => {
-      const res = await axios.get('/todos/2');
-      // .catch((err) => console.log('login: ', err));
-      console.log('res: ', res);
-    })();
-  }, []);
   return (
     <div className={styles.login_bg}>
       <div className={styles.login_container}>
-        <h1
-          className={styles.login_title}
-          onClick={() => {
-            persistor.purge();
-          }}
-        >
-          Admin Name
-        </h1>
-        <h2>
-          {token ? '已登录：' : '未登录'} {token}
-        </h2>
+        <h1 className={styles.login_title}>{Config.appName}</h1>
         {children}
       </div>
     </div>

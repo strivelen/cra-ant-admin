@@ -32,7 +32,7 @@ axios.interceptors.response.use(
       handleHttpStatusCodeEffect(data?.Code, data?.Message);
       return Promise.reject(data?.Message);
     }
-    return data;
+    return data.Data;
   },
   function (error) {
     // console.log('response错误: ', error.toJSON());
