@@ -27,13 +27,12 @@ axios.interceptors.request.use(
 // 响应拦截器 - 错误处理
 axios.interceptors.response.use(
   function (response) {
-    if (response.data?.id !== 1) {
-      const statusCode = 401;
-      const statusMessage = '登录失效' || response.data.title;
-      handleHttpStatusCodeEffect(statusCode, statusMessage);
-      return Promise.reject(statusMessage);
+    const data = response.data;
+    if (data?.Code !== 200) {
+      handleHttpStatusCodeEffect(data?.Code, data?.Message);
+      return Promise.reject(data?.Message);
     }
-    return response.data;
+    return data;
   },
   function (error) {
     // console.log('response错误: ', error.toJSON());

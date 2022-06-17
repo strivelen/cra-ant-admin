@@ -1,9 +1,10 @@
 import { message } from 'antd';
+import { HttpStatusCode } from 'app/global';
 import { persistor } from 'app/store';
 
 // 获取http状态码提示信息
 const getHttpStatusCodeMessage = function (
-  code: number,
+  code: HttpStatusCode,
   resmessage: string | undefined
 ): string {
   if (resmessage) return resmessage;
@@ -48,8 +49,9 @@ const getHttpStatusCodeMessage = function (
   return errorMessage;
 };
 
+// 处理异常状态码副作用
 export const handleHttpStatusCodeEffect = function (
-  code: number,
+  code: HttpStatusCode,
   statusMessage: string | undefined
 ) {
   const errorMessage = getHttpStatusCodeMessage(code, statusMessage);
