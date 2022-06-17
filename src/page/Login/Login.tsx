@@ -40,7 +40,6 @@ const LoginForm: FC = () => {
     <form id="login_form" onSubmit={onSubmit}>
       <LoginFormItem icon={<UserOutlined className={styles.icon} />}>
         <input
-          defaultValue="admin@psy.cn"
           autoComplete="off"
           type="text"
           placeholder="请输入用户名"
@@ -48,12 +47,7 @@ const LoginForm: FC = () => {
         />
       </LoginFormItem>
       <LoginFormItem icon={<UnlockOutlined className={styles.icon} />}>
-        <input
-          defaultValue="123456"
-          type="password"
-          placeholder="请输入密码"
-          name="password"
-        />
+        <input type="password" placeholder="请输入密码" name="password" />
       </LoginFormItem>
       {/* <div className={styles.forgot_password}>忘记密码？</div> */}
       <Button type="primary" htmlType="submit" className={styles.submit}>
