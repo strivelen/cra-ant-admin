@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { handleHttpStatusCodeEffect } from './axios.helper';
-import Config from 'config';
+import Config from 'app/config';
 import { selectToken } from 'features/user/userSlice';
 import { store } from 'app/store';
 

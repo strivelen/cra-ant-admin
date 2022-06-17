@@ -1,7 +1,7 @@
 import type { RouteObject } from 'react-router-dom';
 import { lazy, LazyExoticComponent } from 'react';
-import config from 'config';
-import type { Route } from 'config';
+import config from 'app/config';
+import type { Route } from 'app/config';
 
 type routeElement = {
   [propName: string]: LazyExoticComponent<any>;
