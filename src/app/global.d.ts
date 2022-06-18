@@ -1,35 +1,15 @@
-import { AxiosResponse } from 'axios';
-
 // structural => nominal
-export declare class TaggedProtector<Tag extends string> {
+class TaggedProtector<Tag extends string> {
   protected __tag: Tag;
 }
 
-export type Nominal<T, Tag extends string> = T & TaggedProtector<Tag>;
+type Nominal<T, Tag extends string> = T & TaggedProtector<Tag>;
 
-// http状态码
-export type HttpStatusCode =
-  | 200
-  | 400
-  | 401
-  | 403
-  | 404
-  | 408
-  | 500
-  | 501
-  | 502
-  | 503
-  | 504
-  | 505;
+// 类型提示显示展开后的信息
+type Expand<T> = T extends infer O ? { [K in keyof O]: O[K] } : never;
 
-// http response data structure
-export interface ResponseMain<DataContent> {
-  Code: HttpStatusCode;
-  Data: DataContent;
-  Message: string | undefined;
-  Success: boolean;
-}
-
-export interface Fetch<P, R> {
-  (params: P): AxiosResponse<ResponseMain<R>>;
-}
+type ExpandRecursively<T> = T extends object
+  ? T extends infer O
+    ? { [K in keyof O]: ExpandRecursively<O[K]> }
+    : never
+  : T;

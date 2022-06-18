@@ -1,6 +1,19 @@
 import { message } from 'antd';
-import { HttpStatusCode } from 'app/global';
 import { persistor } from 'app/store';
+
+export type HttpStatusCode =
+  | 200
+  | 400
+  | 401
+  | 403
+  | 404
+  | 408
+  | 500
+  | 501
+  | 502
+  | 503
+  | 504
+  | 505;
 
 // 获取http状态码提示信息
 const getHttpStatusCodeMessage = function (

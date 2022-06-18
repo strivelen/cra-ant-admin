@@ -1,8 +1,15 @@
 import axios from 'axios';
-import { handleHttpStatusCodeEffect } from './axios.helper';
+import { handleHttpStatusCodeEffect, HttpStatusCode } from './axios.helper';
 import Config from 'app/config';
 import { selectToken } from 'features/user/userSlice';
 import { store } from 'app/store';
+
+export interface ResponseData<DataContent> {
+  Code: HttpStatusCode;
+  Data: DataContent;
+  Message: string | undefined;
+  Success: boolean;
+}
 
 axios.defaults.baseURL = Config.apiBaseURL;
 axios.defaults.timeout = Config.apiTimeout;
@@ -27,7 +34,7 @@ axios.interceptors.request.use(
 // 响应拦截器 - 错误处理
 axios.interceptors.response.use(
   function (response) {
-    const data = response.data;
+    const data: ResponseData<any> = response.data;
     if (data?.Code !== 200) {
       handleHttpStatusCodeEffect(data?.Code, data?.Message);
       return Promise.reject(data?.Message);
