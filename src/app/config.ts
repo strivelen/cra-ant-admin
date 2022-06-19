@@ -1,11 +1,19 @@
-export interface Route {
+import type { MergeExclusive } from 'type-fest';
+interface IndexRoute {
+  element: string;
+  file: string;
+  index?: boolean;
+  auth?: boolean;
+}
+interface PathRoute {
   element: string;
   file: string;
   path?: string;
-  index?: boolean;
-  children?: Array<Route>;
+  children?: Route[];
   auth?: boolean;
 }
+
+export type Route = MergeExclusive<IndexRoute, PathRoute>;
 
 interface PageOptions {
   pageSize: number;
@@ -17,7 +25,7 @@ interface Config {
   apiTimeout: number;
   apiSessionKey: string;
   pageOptions: PageOptions;
-  routes: Array<Route>;
+  routes: Route[];
 }
 
 const config: Config = {
