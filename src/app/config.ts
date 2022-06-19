@@ -1,3 +1,4 @@
+import { Pathname } from 'react-router-dom';
 import type { MergeExclusive } from 'type-fest';
 interface IndexRoute {
   element: string;
@@ -19,6 +20,13 @@ interface PageOptions {
   pageSize: number;
 }
 
+export interface MenuItem {
+  Name: string;
+  Icon?: string;
+  Url?: Pathname;
+  Children?: MenuItem[];
+}
+
 interface Config {
   appName: string;
   apiBaseURL: string;
@@ -26,6 +34,8 @@ interface Config {
   apiSessionKey: string;
   pageOptions: PageOptions;
   routes: Route[];
+  isUseServerMenu: boolean;
+  menu: MenuItem[];
 }
 
 const config: Config = {
@@ -57,6 +67,19 @@ const config: Config = {
     },
     { path: '/login', element: 'Login', file: 'page/Login' },
     { path: '*', element: 'NotFound', file: 'page/404' }
+  ],
+  isUseServerMenu: false,
+  menu: [
+    {
+      Name: '用户管理',
+      Icon: 'TeamOutlined',
+      Url: '/test'
+      // Children: [
+      //   {
+      //     Name: '用户管理',
+      //   }
+      // ]
+    }
   ]
 };
 
