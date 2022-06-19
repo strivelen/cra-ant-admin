@@ -21,6 +21,7 @@ interface PageOptions {
 }
 
 export interface MenuItem {
+  key?: string;
   Name: string;
   Icon?: string;
   Url?: Pathname;
@@ -59,9 +60,16 @@ const config: Config = {
           file: 'page/Home'
         },
         {
-          path: '/list',
+          path: 'list',
           element: 'List',
-          file: 'page/List'
+          file: 'page/List',
+          children: [
+            {
+              path: ':id',
+              element: 'List',
+              file: 'page/List'
+            }
+          ]
         }
       ]
     },
@@ -72,13 +80,18 @@ const config: Config = {
   menu: [
     {
       Name: '用户管理',
-      Icon: 'TeamOutlined',
-      Url: '/test'
-      // Children: [
-      //   {
-      //     Name: '用户管理',
-      //   }
-      // ]
+      Icon: 'icon-gerenzhongxin',
+      Children: [
+        {
+          Name: '角色管理',
+          Url: '/list/1'
+        }
+      ]
+    },
+    {
+      Name: '系统设置',
+      Icon: 'icon-gengduo',
+      Url: '/system'
     }
   ]
 };
