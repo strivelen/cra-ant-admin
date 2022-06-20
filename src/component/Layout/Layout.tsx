@@ -1,49 +1,30 @@
-import React, { useState } from 'react';
-import { Outlet, Link } from 'react-router-dom';
-import { Layout, Avatar, Row, Col, Dropdown, Menu, Divider } from 'antd';
-import AdminMenu from './Menu';
-const { Content, Footer, Header } = Layout;
+import { useState } from 'react';
+import { Outlet } from 'react-router-dom';
+import { Layout, Divider } from 'antd';
+import LayoutMenu from './Menu';
+import LayoutHeader from './Header';
+const { Sider, Content, Footer } = Layout;
 
 export default function AdminLayout() {
   const [collapsed, setCollapsed] = useState(false);
   return (
-    <Layout>
-      <AdminMenu
+    <Layout hasSider>
+      <Sider
+        width={260}
+        collapsedWidth={80}
+        trigger={null}
+        collapsible
         collapsed={collapsed}
-        onSelect={({ keyPath }) => {
-          // setBreadcrumb(keyPath.reverse());
-          console.log('keyPath: ', keyPath);
-        }}
-      />
+      >
+        <LayoutMenu />
+      </Sider>
       <Layout className="site-layout">
-        {/* <Header className="site-header">
-            <Row justify="space-between" align="middle">
-              <Col>
-                <Row align="middle">
-                  <Col>
-                    {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                      className: 'site-menu-trigger',
-                      onClick: () => setCollapsed(!collapsed)
-                    })}
-                  </Col>
-                  <Col>
-                    <LayoutBreadcrumb data={breadcrumb} />
-                  </Col>
-                </Row>
-              </Col>
-              <Col>
-                <UserAvatarAndName />
-              </Col>
-            </Row>
-          </Header> */}
+        <LayoutHeader
+          collapsed={collapsed}
+          onCollapsed={() => setCollapsed(!collapsed)}
+        />
         <Divider style={{ height: 6, margin: 0, borderWidth: 0 }} />
-        <Content
-          style={{
-            padding: '8px 16px',
-            overflow: 'initial',
-            backgroundColor: '#fff'
-          }}
-        >
+        <Content className="site-content">
           <Outlet />
         </Content>
         <Footer style={{ textAlign: 'center' }}>Footer</Footer>

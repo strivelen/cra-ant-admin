@@ -6,18 +6,12 @@ import {
   matchRoutes,
   Location
 } from 'react-router-dom';
-import { Menu, Layout } from 'antd';
+import { Menu } from 'antd';
 import { useMenuData, useOpenKeys } from 'hooks/useMenu';
 import Config, { MenuItem } from 'app/config';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
-const { Sider } = Layout;
 
-interface LayoutMenuParams {
-  collapsed: boolean;
-  onSelect(p: { keyPath: string[] }): void;
-}
-
-export default function LayoutMenu({ collapsed = false }: LayoutMenuParams) {
+export default function LayoutMenu() {
   const navigate = useNavigate();
   const menuData = useMenuData();
   const expandMenuData = expandTreeStructure([...menuData]);
@@ -35,32 +29,30 @@ export default function LayoutMenu({ collapsed = false }: LayoutMenuParams) {
   }, [menuData]);
 
   return (
-    <Sider width={260} trigger={null} collapsible collapsed={collapsed}>
-      <div
-        style={{
-          overflowY: 'auto',
-          height: '100vh',
-          position: 'sticky',
-          top: 0
+    <div
+      style={{
+        overflowY: 'auto',
+        height: '100vh',
+        position: 'sticky',
+        top: 0
+      }}
+    >
+      <Menu
+        theme="dark"
+        mode="inline"
+        selectedKeys={selectedKeys}
+        onClick={({ key, keyPath, domEvent }) => {
+          setselectedKeys([key]);
+          const pageUrl = (
+            expandMenuData.find((item) => item.key === key) || {}
+          ).Url as string;
+          navigate(pageUrl);
         }}
-      >
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={selectedKeys}
-          onClick={({ key, keyPath, domEvent }) => {
-            setselectedKeys([key]);
-            const pageUrl = (
-              expandMenuData.find((item) => item.key === key) || {}
-            ).Url as string;
-            navigate(pageUrl);
-          }}
-          openKeys={openKeys}
-          onOpenChange={onOpenChange}
-          items={generateMenuItems(menuData)}
-        />
-      </div>
-    </Sider>
+        openKeys={openKeys}
+        onOpenChange={onOpenChange}
+        items={generateMenuItems(menuData)}
+      />
+    </div>
   );
 }
 
