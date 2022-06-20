@@ -79,6 +79,21 @@ const config: Config = {
   isUseServerMenu: false,
   menu: [
     {
+      Name: '首页',
+      Icon: 'icon-fenlei',
+      Url: '/'
+    },
+    {
+      Name: '订单管理',
+      Icon: 'icon-xihuan',
+      Children: [
+        {
+          Name: '销售订单',
+          Url: '/order/1'
+        }
+      ]
+    },
+    {
       Name: '用户管理',
       Icon: 'icon-gerenzhongxin',
       Children: [

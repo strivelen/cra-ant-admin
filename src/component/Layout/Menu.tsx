@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import {
-  Link,
+  useNavigate,
   useLocation,
   matchPath,
   matchRoutes,
@@ -9,9 +8,9 @@ import {
 } from 'react-router-dom';
 import { Menu, Layout } from 'antd';
 import { useMenuData, useOpenKeys } from 'hooks/useMenu';
-import Config, { MenuItem as TMenuItem } from 'app/config';
+import Config, { MenuItem } from 'app/config';
+import { ItemType } from 'antd/lib/menu/hooks/useItems';
 const { Sider } = Layout;
-const { SubMenu } = Menu;
 
 interface LayoutMenuParams {
   collapsed: boolean;
@@ -19,7 +18,9 @@ interface LayoutMenuParams {
 }
 
 export default function LayoutMenu({ collapsed = false }: LayoutMenuParams) {
+  const navigate = useNavigate();
   const menuData = useMenuData();
+  const expandMenuData = expandTreeStructure([...menuData]);
   const location = useLocation();
   const { openKeys, onOpenChange } = useOpenKeys(menuData);
   const [selectedKeys, setselectedKeys] = useState<string[] | undefined>();
@@ -31,11 +32,7 @@ export default function LayoutMenu({ collapsed = false }: LayoutMenuParams) {
       setselectedKeys(menuStatus.selectKeys);
       onOpenChange(menuStatus.openKeys);
     }
-  }, [menuData, location]);
-
-  const MenuItems = menuData.map((item) => {
-    return <MenuItem key={item.key} data={item} />;
-  });
+  }, [menuData]);
 
   return (
     <Sider width={260} trigger={null} collapsible collapsed={collapsed}>
@@ -51,47 +48,56 @@ export default function LayoutMenu({ collapsed = false }: LayoutMenuParams) {
           theme="dark"
           mode="inline"
           selectedKeys={selectedKeys}
+          onClick={({ key, keyPath, domEvent }) => {
+            setselectedKeys([key]);
+            const pageUrl = (
+              expandMenuData.find((item) => item.key === key) || {}
+            ).Url as string;
+            navigate(pageUrl);
+          }}
           openKeys={openKeys}
           onOpenChange={onOpenChange}
-        >
-          <Menu.Item key="首页" icon={<MenuIcon name="icon-bofang" />}>
-            <Link to="/">首页</Link>
-          </Menu.Item>
-          <Menu.Item key="订单管理" icon={<MenuIcon name="icon-ziliao" />}>
-            <Link to="/order">订单管理</Link>
-          </Menu.Item>
-          {MenuItems}
-        </Menu>
+          items={generateMenuItems(menuData)}
+        />
       </div>
     </Sider>
   );
 }
 
-// 渲染菜单
-function MenuItem({ data }: { data: TMenuItem }) {
-  if (data.Children) {
-    return (
-      <SubMenu title={data.Name} icon={<MenuIcon name={data.Icon} />}>
-        {data.Children.map((item) => {
-          return <MenuItem key={item.key} data={item} />;
-        })}
-      </SubMenu>
-    );
-  }
-  return (
-    <Menu.Item icon={<MenuIcon name={data.Icon} />}>
-      <Link to={{ pathname: data.Url }}>{data.Name}</Link>
-    </Menu.Item>
-  );
-}
-
+/**
+ * 菜单Icon
+ * @param param0 iconfont name
+ * @returns
+ */
 function MenuIcon({ name }: { name: string | undefined }) {
   if (!name) return null;
-  return <span className={`iconfont ${name}`} />;
+  return <span className={`iconfont ${name}`} style={{ marginRight: 6 }} />;
 }
 
+/**
+ * 菜单配置数据生成Menu组件用数据
+ * @param {MenuItem[]} data
+ * @returns
+ */
+const generateMenuItems = (data: MenuItem[]): ItemType[] => {
+  const menu: ItemType[] = [];
+  data.forEach((item) => {
+    let children;
+    if (item.Children) {
+      children = generateMenuItems(item.Children);
+    }
+    menu.push({
+      key: item.key as string,
+      label: item.Name,
+      icon: <MenuIcon name={item.Icon} />,
+      children
+    });
+  });
+  return menu;
+};
+
 interface GetMenuStatus {
-  (menuData: TMenuItem[], location: Location): {
+  (menuData: MenuItem[], location: Location): {
     selectKeys: string[];
     openKeys: string[];
   };
@@ -100,8 +106,8 @@ interface GetMenuStatus {
 // 根据路径匹配菜单状态
 const getMenuStatus: GetMenuStatus = function (menuData, location) {
   // 把菜单树状结构展平
-  const menuLists = [] as TMenuItem[];
-  function getMenuList(menuData: TMenuItem[]) {
+  const menuLists: MenuItem[] = [];
+  function getMenuList(menuData: MenuItem[]) {
     menuData.forEach((item) => {
       menuLists.push(item);
       if (item.Children) {
@@ -118,7 +124,7 @@ const getMenuStatus: GetMenuStatus = function (menuData, location) {
   };
 };
 
-function getSelectKeys(menuLists: TMenuItem[], location: Location): string {
+function getSelectKeys(menuLists: MenuItem[], location: Location): string {
   let currentMenuItemConfig = menuLists.find(
     (item) => item.Url === location.pathname
   );
@@ -153,4 +159,22 @@ function getOpenKeys(keys: string[] = [], key: string): string[] {
     .join('-');
   keys.push(parentDirKey);
   return getOpenKeys(keys, parentDirKey);
+}
+
+/**
+ * 菜单树结构展开
+ */
+function expandTreeStructure(data: MenuItem[]) {
+  let newData: MenuItem[] = [];
+  data.forEach((item) => {
+    if (item.Children) {
+      const curItem = { ...item };
+      const child = expandTreeStructure(curItem.Children || []);
+      delete curItem.Children;
+      newData = [...newData, curItem, ...child];
+    } else {
+      newData.push(item);
+    }
+  });
+  return newData;
 }

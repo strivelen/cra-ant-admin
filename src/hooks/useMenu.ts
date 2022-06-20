@@ -33,7 +33,7 @@ export function useMenuData() {
     (async () => {
       if (Config.isUseServerMenu) {
         const menu = await fetchUserMenu();
-        setMenuData(menu);
+        setMenuData(addMenuKeys(menu, 'menu'));
       }
     })();
   }, []);
