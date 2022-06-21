@@ -29,30 +29,20 @@ export default function LayoutMenu() {
   }, [menuData]);
 
   return (
-    <div
-      style={{
-        overflowY: 'auto',
-        height: '100vh',
-        position: 'sticky',
-        top: 0
+    <Menu
+      theme="dark"
+      mode="inline"
+      selectedKeys={selectedKeys}
+      onClick={({ key, keyPath, domEvent }) => {
+        setselectedKeys([key]);
+        const pageUrl = (expandMenuData.find((item) => item.key === key) || {})
+          .Url as string;
+        navigate(pageUrl);
       }}
-    >
-      <Menu
-        theme="dark"
-        mode="inline"
-        selectedKeys={selectedKeys}
-        onClick={({ key, keyPath, domEvent }) => {
-          setselectedKeys([key]);
-          const pageUrl = (
-            expandMenuData.find((item) => item.key === key) || {}
-          ).Url as string;
-          navigate(pageUrl);
-        }}
-        openKeys={openKeys}
-        onOpenChange={onOpenChange}
-        items={generateMenuItems(menuData)}
-      />
-    </div>
+      openKeys={openKeys}
+      onOpenChange={onOpenChange}
+      items={generateMenuItems(menuData)}
+    />
   );
 }
 

@@ -13,10 +13,20 @@ export default function AdminLayout() {
         width={260}
         collapsedWidth={80}
         trigger={null}
-        collapsible
+        // collapsible
         collapsed={collapsed}
       >
-        <LayoutMenu />
+        <div
+          style={{
+            overflowY: 'auto',
+            height: '100vh',
+            position: 'sticky',
+            top: 0
+          }}
+        >
+          <div className="logo" />
+          <LayoutMenu />
+        </div>
       </Sider>
       <Layout className="site-layout">
         <LayoutHeader
