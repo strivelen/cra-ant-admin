@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom';
 import { Layout, Divider } from 'antd';
 import LayoutMenu from './Menu';
 import LayoutHeader from './Header';
+import Loading from 'component/Loading';
 const { Sider, Content, Footer } = Layout;
 
 export default function AdminLayout() {
@@ -35,7 +36,7 @@ export default function AdminLayout() {
         />
         <Divider style={{ height: 6, margin: 0, borderWidth: 0 }} />
         <Content className="site-content">
-          <Suspense fallback={<div>加载中...</div>}>
+          <Suspense fallback={<Loading height="100%" />}>
             <Outlet />
           </Suspense>
         </Content>

@@ -1,6 +1,7 @@
 import { FC, Suspense } from 'react';
 import { useRoutes } from 'react-router-dom';
 import routes from 'util/generateRoutes';
+import Loading from 'component/Loading';
 
 // const Layout = lazy(() => import('component/Layout'));
 // const Home = lazy(() => import('page/Home'));
@@ -31,7 +32,7 @@ import routes from 'util/generateRoutes';
 
 const Routes: FC = () => {
   let element = useRoutes(routes);
-  return <Suspense fallback={<div>加载中...</div>}>{element}</Suspense>;
+  return <Suspense fallback={<Loading />}>{element}</Suspense>;
 };
 
 export default Routes;

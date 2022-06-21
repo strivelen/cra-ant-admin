@@ -1,43 +1,5 @@
 import { Pathname } from 'react-router-dom';
 import type { MergeExclusive } from 'type-fest';
-interface IndexRoute {
-  element: string;
-  file: string;
-  index?: boolean;
-  auth?: boolean;
-}
-interface PathRoute {
-  element: string;
-  file: string;
-  path?: string;
-  children?: Route[];
-  auth?: boolean;
-}
-
-export type Route = MergeExclusive<IndexRoute, PathRoute>;
-
-interface PageOptions {
-  pageSize: number;
-}
-
-export interface MenuItem {
-  key?: string;
-  Name: string;
-  Icon?: string;
-  Url?: Pathname;
-  Children?: MenuItem[];
-}
-
-interface Config {
-  appName: string;
-  apiBaseURL: string;
-  apiTimeout: number;
-  apiSessionKey: string;
-  pageOptions: PageOptions;
-  routes: Route[];
-  isUseServerMenu: boolean;
-  menu: MenuItem[];
-}
 
 const config: Config = {
   appName: 'Admin Name',
@@ -112,3 +74,42 @@ const config: Config = {
 };
 
 export default config;
+
+interface Config {
+  appName: string;
+  apiBaseURL: string;
+  apiTimeout: number;
+  apiSessionKey: string;
+  pageOptions: PageOptions;
+  routes: Route[];
+  isUseServerMenu: boolean;
+  menu: MenuItem[];
+}
+
+interface IndexRoute {
+  element: string;
+  file: string;
+  index?: boolean;
+  auth?: boolean;
+}
+interface PathRoute {
+  element: string;
+  file: string;
+  path?: string;
+  children?: Route[];
+  auth?: boolean;
+}
+
+export type Route = MergeExclusive<IndexRoute, PathRoute>;
+
+interface PageOptions {
+  pageSize: number;
+}
+
+export interface MenuItem {
+  key?: string;
+  Name: string;
+  Icon?: string;
+  Url?: Pathname;
+  Children?: MenuItem[];
+}
