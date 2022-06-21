@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Layout, Divider } from 'antd';
 import LayoutMenu from './Menu';
@@ -35,7 +35,9 @@ export default function AdminLayout() {
         />
         <Divider style={{ height: 6, margin: 0, borderWidth: 0 }} />
         <Content className="site-content">
-          <Outlet />
+          <Suspense fallback={<div>加载中...</div>}>
+            <Outlet />
+          </Suspense>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Footer</Footer>
       </Layout>

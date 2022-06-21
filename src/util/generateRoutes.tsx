@@ -1,10 +1,10 @@
 import type { RouteObject } from 'react-router-dom';
-import { lazy, LazyExoticComponent } from 'react';
+import { lazy, LazyExoticComponent, FunctionComponent } from 'react';
 import config from 'app/config';
 import type { Route } from 'app/config';
 
 type routeElement = {
-  [propName: string]: LazyExoticComponent<any>;
+  [propName: string]: LazyExoticComponent<FunctionComponent>;
 };
 
 const routeElements: routeElement = {};
