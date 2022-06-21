@@ -2,6 +2,7 @@ import React from 'react';
 import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { Layout, Row, Col } from 'antd';
 import LayoutBreadcrumb from './Breadcrumb';
+import PersonalCenterEntry from './PersonalCenterEntry';
 const { Header } = Layout;
 
 interface LayoutHeaderParams {
@@ -32,7 +33,9 @@ export default function LayoutHeader({
             </Col>
           </Row>
         </Col>
-        <Col>{/* <UserAvatarAndName /> */}</Col>
+        <Col style={{ marginRight: 30 }}>
+          <PersonalCenterEntry />
+        </Col>
       </Row>
     </Header>
   );
