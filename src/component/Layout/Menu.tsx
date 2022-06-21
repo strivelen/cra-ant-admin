@@ -63,7 +63,17 @@ export default function LayoutMenu() {
  */
 function MenuIcon({ name }: { name: string | undefined }) {
   if (!name) return null;
-  return <span className={`iconfont ${name}`} style={{ marginRight: 6 }} />;
+  return (
+    <span
+      className="anticon ant-menu-item-icon"
+      style={{ verticalAlign: 'top' }}
+    >
+      <i
+        className={`iconfont ${name}`}
+        style={{ fontSize: 26, verticalAlign: 'sub', marginLeft: -5 }}
+      />
+    </span>
+  );
 }
 
 /**
