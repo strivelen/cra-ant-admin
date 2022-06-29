@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'app/store';
-import { fetchLogin, LoginParams } from 'api/User';
+import { fetchLogin, LoginParams, User } from 'api/User';
 import { PURGE } from 'redux-persist';
 
 export interface UserState {
-  userinfo: object;
+  userinfo: User;
   token: string | undefined;
   isLogin: boolean;
 }
 
 const initialState: UserState = {
-  userinfo: {},
+  userinfo: {} as User,
   token: undefined,
   isLogin: false
 };
@@ -47,7 +47,7 @@ export const userSlice = createSlice({
       })
       .addCase(PURGE, (state) => {
         state = {
-          userinfo: {},
+          userinfo: {} as User,
           token: undefined,
           isLogin: false
         };

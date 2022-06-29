@@ -12,7 +12,7 @@ export default function PersonalCenterEntry() {
         <Col>
           <Avatar icon={<UserOutlined />} />
         </Col>
-        <Col>{'张三'}</Col>
+        <Col>{userInfo.Name || 'Admin'}</Col>
       </Row>
     </Dropdown>
   );
@@ -23,15 +23,16 @@ function PersonalMenu() {
     <Menu
       style={{ width: 100, textAlign: 'center' }}
       onClick={(e) => {
-        if (e.key === '3') {
-          persistor.purge();
+        if (e.key === 'logout') {
+          persistor.purge(); // 清楚硬盘（如：localStorage）中的所有数据
         }
       }}
       items={[
+        // 个人菜单示例
         { key: '0', label: '我的信息' },
         { key: '1', label: '修改密码' },
         { type: 'divider' },
-        { key: '3', danger: true, label: '退出登录' }
+        { key: 'logout', danger: true, label: '退出登录' }
       ]}
     />
   );

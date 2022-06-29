@@ -1,12 +1,14 @@
 import axios from 'util/axios';
 import type { MenuItem } from 'app/config';
 
+export type User = {
+  CompanyName: string;
+  Name: string;
+};
+
 interface LoginResponse {
   SessionKey: string;
-  User: {
-    CompanyName: string;
-    Name: string;
-  };
+  User: User;
 }
 
 export type LoginParams = {
