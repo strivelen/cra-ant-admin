@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { fetchUserMenu } from 'api/User';
 import Config from 'app/config';
 import type { MenuItem } from 'app/config';
@@ -46,24 +46,29 @@ export function useMenuData() {
  * @param { MenuItem[] } menuData
  * @returns
  */
-export function useOpenKeys(menuData: MenuItem[]) {
+export function useOpenKeysState(menuData: MenuItem[]) {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
-  const rootSubmenuKeys = menuData
-    .filter((item) => item.Children && item.Children.length > 0)
-    .map((item) => item.key);
+  // 处理菜单openKeys改变
+  const onOpenChange = useCallback<(keys: string[]) => void>(
+    (keys) => {
+      const rootSubmenuKeys = menuData
+        .filter((item) => item.Children && item.Children.length > 0)
+        .map((item) => item.key);
 
-  // 处理菜单折叠
-  const onOpenChange = ((keys) => {
-    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
+      const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
 
-    if (rootSubmenuKeys.indexOf(String(latestOpenKey)) === -1) {
-      setOpenKeys(keys);
-    } else {
-      const newKeys = latestOpenKey ? [latestOpenKey] : [];
-      setOpenKeys(newKeys);
-    }
-  }) as (openKeys: string[]) => void;
+      if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+        setOpenKeys(keys);
+      } else {
+        const childKeys = keys.filter(
+          (item) => latestOpenKey && item.indexOf(latestOpenKey) > -1
+        );
+        setOpenKeys(latestOpenKey ? [...childKeys, latestOpenKey] : []);
+      }
+    },
+    [menuData, openKeys]
+  );
 
   return { openKeys, onOpenChange };
 }

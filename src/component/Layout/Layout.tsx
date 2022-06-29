@@ -1,13 +1,14 @@
-import { useState, Suspense } from 'react';
+import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Layout, Divider } from 'antd';
 import LayoutMenu from './Menu';
 import LayoutHeader from './Header';
 import Loading from 'component/Loading';
+import { useAppSelector } from 'app/hooks';
 const { Sider, Content, Footer } = Layout;
 
 export default function AdminLayout() {
-  const [collapsed, setCollapsed] = useState(false);
+  const { collapsed } = useAppSelector((state) => state.layout);
   return (
     <Layout hasSider>
       <Sider
@@ -30,10 +31,7 @@ export default function AdminLayout() {
         </div>
       </Sider>
       <Layout className="site-layout">
-        <LayoutHeader
-          collapsed={collapsed}
-          onCollapsed={() => setCollapsed(!collapsed)}
-        />
+        <LayoutHeader />
         <Divider style={{ height: 6, margin: 0, borderWidth: 0 }} />
         <Content className="site-content">
           <Suspense fallback={<Loading height="100%" />}>

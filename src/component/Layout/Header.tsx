@@ -3,17 +3,13 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
 import { Layout, Row, Col } from 'antd';
 import LayoutBreadcrumb from './Breadcrumb';
 import PersonalCenterEntry from './PersonalCenterEntry';
+import { useAppSelector, useAppDispatch } from 'app/hooks';
+import { setCollapsed } from 'features/layout/layoutSlice';
 const { Header } = Layout;
 
-interface LayoutHeaderParams {
-  collapsed: boolean;
-  onCollapsed(): void;
-}
-
-export default function LayoutHeader({
-  collapsed,
-  onCollapsed
-}: LayoutHeaderParams) {
+export default function LayoutHeader() {
+  const dispatch = useAppDispatch();
+  const { collapsed } = useAppSelector((state) => state.layout);
   return (
     <Header className="site-header">
       <Row justify="space-between" align="middle">
@@ -24,7 +20,7 @@ export default function LayoutHeader({
                 collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
                 {
                   className: 'site-menu-trigger',
-                  onClick: () => onCollapsed()
+                  onClick: () => dispatch(setCollapsed(!collapsed))
                 }
               )}
             </Col>
