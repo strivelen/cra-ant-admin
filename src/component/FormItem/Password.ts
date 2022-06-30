@@ -1,10 +1,17 @@
 import { Input } from 'antd';
-import { PasswordProps } from 'antd/lib/input';
+import type { PasswordProps } from 'antd/lib/input';
 import React from 'react';
 
-export default function Password(props: PasswordProps) {
+interface CustomPasswordProps extends Omit<PasswordProps, 'onChange'> {
+  onChange?(v: string): void;
+}
+
+export default function Password(props: CustomPasswordProps) {
   return React.createElement(Input.Password, {
     allowClear: true,
-    ...props
+    ...props,
+    onChange: (e) => {
+      props.onChange && props.onChange(e.target.value);
+    }
   });
 }
