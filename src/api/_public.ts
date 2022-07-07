@@ -10,3 +10,29 @@ type EnumResponse = Array<{ Key: string; Value: string }>;
 export const fetchEnums = function (url: string) {
   return axios.get<any, ExpandRecursively<EnumResponse>>(url);
 };
+
+interface PaginationParams {
+  pageSize?: number;
+  pageNumber?: number;
+  isASC?: boolean;
+  name?: string;
+  [propName: string]: any;
+}
+
+interface PaginationListResponse<ListItem = any> {
+  List: ListItem[];
+  VirtualCount: number;
+}
+
+/**
+ * 获取列表
+ * @param { string } url
+ * @param { object } params
+ * @returns
+ */
+export const fetchList = function (url: string, params: PaginationParams) {
+  return axios.post<any, ExpandRecursively<PaginationListResponse>>(
+    url,
+    params
+  );
+};
