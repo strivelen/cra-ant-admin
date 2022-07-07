@@ -13,3 +13,18 @@ type ExpandRecursively<T> = T extends object
     ? { [K in keyof O]: ExpandRecursively<O[K]> }
     : never
   : T;
+
+// 将对象的key作为联合类型
+// keyof typeof object;
+
+// 将对象的value作为联合类型
+// typeof obj[keyof typeof obj]
+
+/**
+ * 取出组件的props
+ */
+type ComponentProps<T> = T extends
+  | React.ComponentType<infer P>
+  | React.Component<infer P>
+  ? JSX.LibraryManagedAttributes<T, P>
+  : never;
