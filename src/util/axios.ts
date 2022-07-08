@@ -12,7 +12,7 @@ export interface ResponseData<DataContent> {
   Success: boolean;
 }
 
-axios.defaults.baseURL = Config.apiBaseURL;
+axios.defaults.baseURL = process.env.REACT_APP_API_HOST;
 axios.defaults.timeout = Config.apiTimeout;
 
 // 请求拦截器 - 添加sessionKey

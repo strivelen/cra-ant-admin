@@ -3,7 +3,6 @@ import type { MergeExclusive } from 'type-fest';
 
 const config: Config = {
   appName: 'Admin Name',
-  apiBaseURL: 'http://localhost:3000',
   apiTimeout: 30000,
   apiSessionKey: 'psyweb-sessionkey',
   pageSize: 20,
@@ -75,7 +74,6 @@ export default config;
 
 interface Config {
   appName: string;
-  apiBaseURL: string;
   apiTimeout: number;
   apiSessionKey: string;
   pageSize: number;
