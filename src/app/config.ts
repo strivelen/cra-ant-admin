@@ -3,12 +3,10 @@ import type { MergeExclusive } from 'type-fest';
 
 const config: Config = {
   appName: 'Admin Name',
-  apiBaseURL: 'http://psyManageApi.lkha.net',
+  apiBaseURL: 'http://localhost:3000',
   apiTimeout: 30000,
   apiSessionKey: 'psyweb-sessionkey',
-  pageOptions: {
-    pageSize: 12
-  },
+  pageSize: 20,
   routes: [
     {
       path: '/',
@@ -80,7 +78,7 @@ interface Config {
   apiBaseURL: string;
   apiTimeout: number;
   apiSessionKey: string;
-  pageOptions: PageOptions;
+  pageSize: number;
   routes: Route[];
   isUseServerMenu: boolean;
   menu: MenuItem[];
@@ -101,10 +99,6 @@ interface PathRoute {
 }
 
 export type Route = MergeExclusive<IndexRoute, PathRoute>;
-
-interface PageOptions {
-  pageSize: number;
-}
 
 export interface MenuItem {
   key?: string;

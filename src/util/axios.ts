@@ -3,6 +3,7 @@ import { handleHttpStatusCodeEffect, HttpStatusCode } from './axios.helper';
 import Config from 'app/config';
 import { selectToken } from 'features/user/userSlice';
 import { store } from 'app/store';
+import { message } from 'antd';
 
 export interface ResponseData<DataContent> {
   Code: HttpStatusCode;
@@ -42,6 +43,7 @@ axios.interceptors.response.use(
     return data.Data;
   },
   function (error) {
+    error.name === 'AxiosError' && message.error(error.message);
     // console.log('response错误: ', error.toJSON());
     return Promise.reject(error);
   }
