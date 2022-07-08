@@ -31,7 +31,7 @@ interface PaginationListResponse<ListItem = any> {
  * @returns
  */
 export const fetchList = function (url: string, params: PaginationParams) {
-  return axios.post<any, ExpandRecursively<PaginationListResponse>>(
+  return axios.post<any, ExpandRecursively<PaginationListResponse | any[]>>(
     url,
     params
   );

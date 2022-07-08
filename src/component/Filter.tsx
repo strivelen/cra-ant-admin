@@ -120,7 +120,13 @@ function FilterBtns({ form, isShowQueryBtn, children }: FilterBtnsProps) {
         >
           查询
         </Button>
-        <Button style={{ marginLeft: 20 }} onClick={() => form.resetFields()}>
+        <Button
+          style={{ marginLeft: 20 }}
+          onClick={() => {
+            form.resetFields();
+            form.submit();
+          }}
+        >
           重置
         </Button>
       </Col>
