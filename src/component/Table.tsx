@@ -9,12 +9,12 @@ import { Table as AntTable, Row, Col } from 'antd';
 import useTable, { UseTableParams, OnFilter, OnRefresh } from 'hooks/useTable';
 import { ColumnType } from 'antd/lib/table';
 
-interface TableConfig extends UseTableParams {
+export interface TableConfig extends UseTableParams {
   columns: ColumnType<any>[];
   rowKey?: string;
 }
 
-interface RefObjectType {
+export interface RefTableType {
   onFilter: OnFilter;
   onRefresh: OnRefresh;
 }
@@ -30,7 +30,7 @@ function Table(
     sortName,
     isInvertedOrder
   }: TableConfig,
-  ref: Ref<RefObjectType>
+  ref: Ref<RefTableType>
 ) {
   const { loading, dataSource, onChange, pagination, onFilter, onRefresh } =
     useTable({

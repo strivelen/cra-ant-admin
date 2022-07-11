@@ -1,6 +1,12 @@
 import { Row, Col, Form, Button } from 'antd';
 import * as formItems from 'component/FormItem';
-import React, { useEffect, ReactNode, CSSProperties } from 'react';
+import React, {
+  ReactNode,
+  CSSProperties,
+  forwardRef,
+  useImperativeHandle,
+  Ref
+} from 'react';
 import type { FormInstance } from 'antd/es/form/Form';
 
 type FormItemsKeys = keyof typeof formItems;
@@ -9,7 +15,7 @@ type ComPropsType = {
   [key in FormItemsKeys]: ComponentProps<typeof formItems[key]>;
 };
 
-interface FieldsConfig {
+export interface FieldsConfig {
   label: string;
   component: FormItemsKeys;
   fields: string;
@@ -17,10 +23,17 @@ interface FieldsConfig {
   defaultValue?: any;
 }
 
+export type FilterChildren = ((form: FormInstance) => ReactNode) | ReactNode;
+
 interface FilterProps {
   fieldsConfig: FieldsConfig[];
-  children?: ((form: FormInstance) => ReactNode) | ReactNode;
+  children?: FilterChildren;
   onSubmit(fieldsValue: FormData): void;
+}
+
+export interface RefFilterType {
+  initialValues: object;
+  form: FormInstance;
 }
 
 const ColSpan = {
@@ -32,28 +45,35 @@ const ColSpan = {
   xxl: 4
 };
 
-export default function Filter({
-  fieldsConfig = [],
-  children,
-  onSubmit
-}: FilterProps) {
+function Filter(
+  { fieldsConfig = [], children, onSubmit }: FilterProps,
+  ref: Ref<RefFilterType>
+) {
   const [form] = Form.useForm();
-  useEffect(() => {
-    const initialValues = fieldsConfig.reduce(
-      (obj, filterItem) => ({
-        ...obj,
-        [filterItem.fields]: filterItem.defaultValue
-      }),
-      {}
-    );
-    form.setFieldsValue(initialValues);
-  }, [fieldsConfig]);
+  const initialValues = fieldsConfig.reduce(
+    (obj, filterItem) => ({
+      ...obj,
+      [filterItem.fields]: filterItem.defaultValue
+    }),
+    {}
+  );
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      initialValues,
+      form
+    }),
+    [initialValues, form]
+  );
+
   return (
     <Form
       form={form}
       labelWrap
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
+      initialValues={initialValues}
       onFinish={(fieldsValue) => onSubmit(fieldsValue)}
     >
       <FilterFieldsConfig fieldsConfig={fieldsConfig}>
@@ -136,3 +156,5 @@ function FilterBtns({ form, isShowQueryBtn, children }: FilterBtnsProps) {
     </Row>
   );
 }
+
+export default forwardRef(Filter);

@@ -47,7 +47,7 @@ function useTable({
   const [_isDefaultInit, setIsDefaultInit] = useState<boolean>(
     isDefaultInit !== undefined ? isDefaultInit : true
   );
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(_isDefaultInit);
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [filterParams, setFilterParams] = useState(initFilterValue);
   const [pagination, setPagination] = useState<TablePaginationConfig>({
