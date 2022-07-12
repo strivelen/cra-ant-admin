@@ -1,7 +1,12 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, createContext, RefObject } from 'react';
 import Table, { RefTableType, TableConfig } from '../Table';
 import Filter, { RefFilterType, FieldsConfig, FilterChildren } from '../Filter';
 
+interface CRUDTemplateContextProps {
+  refTable?: RefObject<RefTableType>;
+}
+
+export const CRUDTemplateContext = createContext<CRUDTemplateContextProps>({});
 interface CURDTemplateProps {
   queryFieldsConfig: FieldsConfig[];
   tableConfig: TableConfig;
@@ -20,7 +25,7 @@ export default function CRUDTemplate({
     refTable.current?.onFilter(initFilterValue);
   }, []);
   return (
-    <>
+    <CRUDTemplateContext.Provider value={{ refTable }}>
       <Filter
         ref={refFilter}
         fieldsConfig={queryFieldsConfig}
@@ -29,6 +34,6 @@ export default function CRUDTemplate({
         {actions}
       </Filter>
       <Table {...tableConfig} ref={refTable} isDefaultInit={false} />
-    </>
+    </CRUDTemplateContext.Provider>
   );
 }

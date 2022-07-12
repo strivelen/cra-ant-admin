@@ -93,30 +93,32 @@ function useTable({
   };
   // 获取列表
   const getDataSource = async () => {
-    const paginationParams = {
-      pageSize: isPagination ? pagination.pageSize : undefined,
-      pageNumber: isPagination ? pagination.current : undefined,
-      isASC: !_isInvertedOrder,
-      name: _sortName
-    };
-    setLoading(true);
-    if (!api) {
-      return message.warning('缺少参数: api');
-    }
-    const data = await fetchList(api, {
-      ...paginationParams,
-      ...filterParams
-    });
-    console.log('================== 获取 TableList 完成 ==================');
-    console.log(data);
-    setLoading(false);
-    setDataSource(Array.isArray(data) ? data : data.List);
-    isPagination &&
-      !Array.isArray(data) &&
-      setPagination({
-        ...pagination,
-        total: data.VirtualCount
+    try {
+      const paginationParams = {
+        pageSize: isPagination ? pagination.pageSize : undefined,
+        pageNumber: isPagination ? pagination.current : undefined,
+        isASC: !_isInvertedOrder,
+        name: _sortName
+      };
+      setLoading(true);
+      if (!api) {
+        return message.warning('缺少参数: api');
+      }
+      const data = await fetchList(api, {
+        ...paginationParams,
+        ...filterParams
       });
+      setLoading(false);
+      setDataSource(Array.isArray(data) ? data : data.List);
+      isPagination &&
+        !Array.isArray(data) &&
+        setPagination({
+          ...pagination,
+          total: data.VirtualCount
+        });
+    } catch {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
