@@ -19,8 +19,10 @@ import storageSession from 'redux-persist/lib/storage/session';
 import counterReducer from '../features/counter/counterSlice';
 import userSlice from '../features/user/userSlice';
 import layoutSlice from '../features/layout/layoutSlice';
+import loadingReducer from '../features/loading/loadingSlice';
 
 const rootReducer = combineReducers({
+  loading: loadingReducer,
   counter: counterReducer,
   user: persistReducer(
     {
@@ -43,7 +45,7 @@ const persistConfig = {
   key: 'root',
   version: 1,
   storage,
-  blacklist: ['user', 'layout']
+  blacklist: ['user', 'layout', 'counter', 'loading']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

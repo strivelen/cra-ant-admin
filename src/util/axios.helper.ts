@@ -1,6 +1,6 @@
 import { message } from 'antd';
 import { persistor, store } from 'app/store';
-import { setLoading } from 'features/layout/layoutSlice';
+import { setLoading } from 'features/loading/loadingSlice';
 
 export type HttpStatusCode =
   | 200
