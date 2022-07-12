@@ -1,5 +1,6 @@
 import { message } from 'antd';
-import { persistor } from 'app/store';
+import { persistor, store } from 'app/store';
+import { setLoading } from 'features/layout/layoutSlice';
 
 export type HttpStatusCode =
   | 200
@@ -73,3 +74,34 @@ export const handleHttpStatusCodeEffect = function (
     persistor.purge(); // 清空localStorage并清空redux state.user
   }
 };
+
+function startLoading() {
+  // 开启 loading
+  store.dispatch(setLoading(true));
+}
+function endLoading() {
+  // 关闭 loading
+  setTimeout(() => {
+    store.dispatch(setLoading(false));
+  }, 600);
+}
+
+// showFullScreenLoading() tryHideFullScreenLoading() 用于将同一时刻的请求合并。
+// 声明一个变量 needLoadingRequestCount，每次调用showFullScreenLoading方法 needLoadingRequestCount + 1
+// 调用tryHideFullScreenLoading()方法，needLoadingRequestCount - 1   needLoadingRequestCount为 0 时，结束 loading
+
+let needLoadingRequestCount = 0;
+export function showFullScreenLoading() {
+  if (needLoadingRequestCount === 0) {
+    startLoading();
+  }
+  needLoadingRequestCount++;
+}
+
+export function tryHideFullScreenLoading() {
+  if (needLoadingRequestCount <= 0) return;
+  needLoadingRequestCount--;
+  if (needLoadingRequestCount === 0) {
+    endLoading();
+  }
+}
