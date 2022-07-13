@@ -37,4 +37,5 @@ interface ActionComProps {
 interface ActionProps<ModalProps> {
   modalOption: Omit<ModalProps, 'visible' | 'onOk' | 'onCancel'>;
   actionCom(p: ActionComProps): void;
+  [propName: string]: any;
 }
