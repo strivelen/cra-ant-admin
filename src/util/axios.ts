@@ -20,7 +20,7 @@ export interface ResponseData<DataContent> {
 axios.defaults.baseURL = process.env.REACT_APP_API_HOST;
 axios.defaults.timeout = Config.apiTimeout;
 
-// 请求拦截器 - 添加sessionKey
+// 请求拦截器 - 添加sessionKey & 显示loading
 axios.interceptors.request.use(
   function (config) {
     showFullScreenLoading();
@@ -38,7 +38,7 @@ axios.interceptors.request.use(
   }
 );
 
-// 响应拦截器 - 错误处理
+// 响应拦截器 - 错误处理 & 关闭loading
 axios.interceptors.response.use(
   function (response) {
     tryHideFullScreenLoading();
@@ -50,6 +50,7 @@ axios.interceptors.response.use(
     return data.Data;
   },
   function (error) {
+    tryHideFullScreenLoading();
     error.name === 'AxiosError' && message.error(error.message);
     // console.log('response错误: ', error.toJSON());
     return Promise.reject(error);
