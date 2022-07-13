@@ -1,10 +1,10 @@
-import React, { useState, useContext, useRef, ReactNode } from 'react';
-import { Form, Row, Col, Modal, message, Input } from 'antd';
+import { useState, useContext } from 'react';
+import { Form, Modal, message } from 'antd';
 import axios from 'util/axios';
 import { CRUDTemplateContext } from '../CRUDTemplate';
 import { useAppSelector } from 'app/hooks';
 import { selectLoading } from 'features/loading/loadingSlice';
-import * as FormItems from 'component/FormItem';
+import RenderFieldsConfig from 'component/RenderFieldsConfig';
 const { success } = message;
 
 interface AddModalProps {
@@ -12,8 +12,9 @@ interface AddModalProps {
   visible: boolean;
   onCancel(): void;
   onOk(): void;
-  fields?: any;
+  fields: any;
   submitApi: string;
+  width?: number;
 }
 
 export function AddModal({
@@ -22,30 +23,23 @@ export function AddModal({
   onCancel,
   onOk,
   fields,
-  submitApi
+  submitApi,
+  width = 960
 }: AddModalProps) {
   const loading = useAppSelector(selectLoading);
   const [form] = Form.useForm();
 
   // 提交
   const onFinish = async (values: object) => {
-    try {
-      console.log('================== add-form-values ================');
-      console.log(values);
-      // setLoading(true);
-      await axios.post(submitApi, { ...values });
-      success('新增成功');
-      onCancel();
-      onOk();
-      setTimeout(() => {
-        form.resetFields();
-        // setLoading(false);
-      }, 300);
-    } catch (e) {
-      console.log(`============= 进入catch ==============`);
-      console.log(e);
-    }
+    await axios.post(submitApi, { ...values });
+    success('新增成功');
+    onCancel();
+    onOk();
+    setTimeout(() => {
+      form.resetFields();
+    }, 300);
   };
+
   return (
     <Modal
       centered
@@ -59,31 +53,20 @@ export function AddModal({
           form.resetFields();
         }, 300);
       }}
-      width={960}
+      width={width}
       onOk={() => form.submit()}
     >
       <Form form={form} onFinish={(values) => onFinish(values)}>
-        <Form.Item label="测试" name="test">
-          <Input />
-        </Form.Item>
-        {/* <Row>
-          <RenderFields fields={fieldsConfig} form={form} />
-        </Row> */}
+        <RenderFieldsConfig fields={fields} />
       </Form>
     </Modal>
   );
 }
 
-interface ActionComProps {
-  onShowModal(): void;
-}
-
-interface AddActionProps {
-  modalOption: Omit<AddModalProps, 'visible' | 'onOk' | 'onCancel'>;
-  actionCom(p: ActionComProps): void;
-}
-
-export default function AddAction({ modalOption, actionCom }: AddActionProps) {
+export default function AddAction({
+  modalOption,
+  actionCom
+}: ActionProps<AddModalProps>) {
   const [visible, setVisible] = useState(false);
   const { refTable } = useContext(CRUDTemplateContext);
   const onShowModal = () => setVisible(true);

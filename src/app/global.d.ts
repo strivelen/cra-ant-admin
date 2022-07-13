@@ -28,3 +28,13 @@ type ComponentProps<T> = T extends
   | React.Component<infer P>
   ? JSX.LibraryManagedAttributes<T, P>
   : never;
+
+interface ActionComProps {
+  onShowModal(): void;
+}
+
+// CRUDTemplate组件在封装可复用Action时必需接受的props
+interface ActionProps<ModalProps> {
+  modalOption: Omit<ModalProps, 'visible' | 'onOk' | 'onCancel'>;
+  actionCom(p: ActionComProps): void;
+}
