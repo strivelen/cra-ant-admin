@@ -83,7 +83,7 @@ function endLoading() {
   // 关闭 loading
   setTimeout(() => {
     store.dispatch(setLoading(false));
-  }, 600);
+  }, 300);
 }
 
 // showFullScreenLoading() tryHideFullScreenLoading() 用于将同一时刻的请求合并。
