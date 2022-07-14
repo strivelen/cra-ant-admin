@@ -36,6 +36,6 @@ interface ActionComProps {
 // CRUDTemplate组件在封装可复用Action时必需接受的props
 interface ActionProps<ModalProps> {
   modalOption: Omit<ModalProps, 'visible' | 'onOk' | 'onCancel'>;
-  actionCom(p: ActionComProps): void;
+  actionCom(p: ActionComProps): ReactNode;
   [propName: string]: any;
 }

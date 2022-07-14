@@ -1,5 +1,9 @@
-import { Button } from 'antd';
-import CRUDTemplate, { AddAction, UpdateAction } from 'component/CRUDTemplate';
+import { Button, Divider } from 'antd';
+import CRUDTemplate, {
+  AddAction,
+  UpdateAction,
+  DeleteAction
+} from 'component/CRUDTemplate';
 
 export default function Home() {
   return (
@@ -51,29 +55,11 @@ export default function Home() {
             key: 'action',
             render: (_, record, index) => {
               return (
-                <UpdateAction
-                  record={record}
-                  modalOption={{
-                    detailApi: '/User/Get',
-                    title: '修改用户2',
-                    submitApi: '/User/Add',
-                    fields: {
-                      Name: {
-                        rules: [{ required: true, message: '请输入姓名' }],
-                        label: '姓名',
-                        component: 'Input'
-                      },
-                      CreateTime: {
-                        // isFillLine: true,
-                        component: 'Input',
-                        label: '创建时间'
-                      }
-                    }
-                  }}
-                  actionCom={({ onShowModal }) => (
-                    <a onClick={onShowModal}>修改</a>
-                  )}
-                />
+                <>
+                  <UpdateButton record={record} />
+                  <Divider type="vertical" />
+                  <DeleteButton record={record} />
+                </>
               );
             }
           }
@@ -92,10 +78,10 @@ export default function Home() {
                     label: '姓名',
                     component: 'Input'
                   },
-                  CompanyName: {
+                  CreateTime: {
                     // isFillLine: true,
                     component: 'Input',
-                    label: '公司名称'
+                    label: '创建时间'
                   }
                 }
               }}
@@ -105,12 +91,48 @@ export default function Home() {
                 </Button>
               )}
             />
-            <Button type="primary" style={{ marginLeft: 30 }}>
-              新增2
-            </Button>
           </>
         );
       }}
+    />
+  );
+}
+
+function DeleteButton({ record }: any) {
+  return (
+    <DeleteAction
+      record={record}
+      modalOption={{
+        title: '确定要删除此用户吗？',
+        submitApi: '/User/Delete'
+      }}
+      actionCom={({ onShowModal }) => <a onClick={onShowModal}>删除</a>}
+    />
+  );
+}
+
+function UpdateButton({ record }: any) {
+  return (
+    <UpdateAction
+      record={record}
+      modalOption={{
+        detailApi: '/User/Get',
+        title: '修改用户2',
+        submitApi: '/User/Add',
+        fields: {
+          Name: {
+            rules: [{ required: true, message: '请输入姓名' }],
+            label: '姓名',
+            component: 'Input'
+          },
+          CreateTime: {
+            // isFillLine: true,
+            component: 'Input',
+            label: '创建时间'
+          }
+        }
+      }}
+      actionCom={({ onShowModal }) => <a onClick={onShowModal}>修改</a>}
     />
   );
 }
