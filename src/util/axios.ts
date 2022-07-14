@@ -42,10 +42,14 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   function (response) {
     tryHideFullScreenLoading();
-    const data: ResponseData<any> = response.data;
+    const { data, headers } = response;
     if (data?.Code !== 200) {
       handleHttpStatusCodeEffect(data?.Code, data?.Message);
       return Promise.reject(data?.Message);
+    }
+    if (headers['content-type'] === 'application/octet-stream') {
+      const filename = headers['content-disposition'].split('=')[1];
+      return { blob: data, filename };
     }
     return data.Data;
   },

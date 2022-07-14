@@ -72,7 +72,7 @@ export default function AddAction({
   const onShowModal = () => setVisible(true);
   return (
     <>
-      {typeof actionCom === 'function' && actionCom({ onShowModal })}
+      {typeof actionCom === 'function' && actionCom({ onAction: onShowModal })}
       <AddModal
         {...option}
         visible={visible}

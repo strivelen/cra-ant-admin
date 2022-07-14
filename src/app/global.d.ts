@@ -30,7 +30,7 @@ type ComponentProps<T> = T extends
   : never;
 
 interface ActionComProps {
-  onShowModal(): void;
+  onAction(): void;
 }
 
 // CRUDTemplate组件在封装可复用Action时必需接受的props

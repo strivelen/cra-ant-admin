@@ -116,7 +116,7 @@ export default function UpdateAction({
 
   return (
     <>
-      {typeof actionCom === 'function' && actionCom({ onShowModal })}
+      {typeof actionCom === 'function' && actionCom({ onAction: onShowModal })}
       <NewUpdateModal
         {...option}
         ref={refUpdateModal}

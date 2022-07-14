@@ -50,5 +50,5 @@ export default function DeleteAction({
       params: option.params || { ID: record.ID },
       cb
     });
-  return actionCom && actionCom({ onShowModal });
+  return actionCom && actionCom({ onAction: onShowModal });
 }

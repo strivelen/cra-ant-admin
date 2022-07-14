@@ -2,7 +2,8 @@ import { Button, Divider } from 'antd';
 import CRUDTemplate, {
   AddAction,
   UpdateAction,
-  DeleteAction
+  DeleteAction,
+  ExportAction
 } from 'component/CRUDTemplate';
 
 export default function Home() {
@@ -85,9 +86,24 @@ export default function Home() {
                   }
                 }
               }}
-              actionCom={({ onShowModal }) => (
-                <Button type="primary" onClick={onShowModal}>
+              actionCom={({ onAction }) => (
+                <Button type="primary" onClick={onAction}>
                   新增
+                </Button>
+              )}
+            />
+            <ExportAction
+              option={{
+                api: '',
+                params: {}
+              }}
+              actionCom={({ onAction }) => (
+                <Button
+                  style={{ marginLeft: 20 }}
+                  type="primary"
+                  onClick={onAction}
+                >
+                  导出
                 </Button>
               )}
             />
@@ -106,7 +122,7 @@ function DeleteButton({ record }: any) {
         title: '确定要删除此用户吗？',
         submitApi: '/User/Delete'
       }}
-      actionCom={({ onShowModal }) => <a onClick={onShowModal}>删除</a>}
+      actionCom={({ onAction }) => <a onClick={onAction}>删除</a>}
     />
   );
 }
@@ -132,7 +148,7 @@ function UpdateButton({ record }: any) {
           }
         }
       }}
-      actionCom={({ onShowModal }) => <a onClick={onShowModal}>修改</a>}
+      actionCom={({ onAction }) => <a onClick={onAction}>修改</a>}
     />
   );
 }
