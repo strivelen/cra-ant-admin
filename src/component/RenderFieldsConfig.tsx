@@ -79,7 +79,7 @@ export default function Fields({
         }
         return (
           <Col key={item} span={12} {...col}>
-            <FormItem name={item} {...formItemProps} {...colSpan}>
+            <FormItem name={item} {...colSpan} {...formItemProps}>
               <Com {...defaultProps} {...componentProps} />
             </FormItem>
           </Col>

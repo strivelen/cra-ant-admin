@@ -3,7 +3,8 @@ import CRUDTemplate, {
   AddAction,
   UpdateAction,
   DeleteAction,
-  ExportAction
+  ExportAction,
+  ViewAction
 } from 'component/CRUDTemplate';
 
 export default function Home() {
@@ -57,6 +58,8 @@ export default function Home() {
             render: (_, record, index) => {
               return (
                 <>
+                  <ViewButton record={record} />
+                  <Divider type="vertical" />
                   <UpdateButton record={record} />
                   <Divider type="vertical" />
                   <DeleteButton record={record} />
@@ -71,6 +74,7 @@ export default function Home() {
           <>
             <AddAction
               option={{
+                width: 690,
                 title: '新增用户',
                 submitApi: '/User/Add',
                 fields: {
@@ -132,23 +136,56 @@ function UpdateButton({ record }: any) {
     <UpdateAction
       record={record}
       option={{
+        width: 460,
         detailApi: '/User/Get',
         title: '修改用户2',
         submitApi: '/User/Add',
         fields: {
           Name: {
+            isFillLine: true,
             rules: [{ required: true, message: '请输入姓名' }],
             label: '姓名',
-            component: 'Input'
+            component: 'Input',
+            labelCol: { span: 5 }
           },
           CreateTime: {
-            // isFillLine: true,
+            isFillLine: true,
             component: 'Input',
-            label: '创建时间'
+            label: '创建时间',
+            labelCol: { span: 5 }
           }
         }
       }}
       actionCom={({ onAction }) => <a onClick={onAction}>修改</a>}
+    />
+  );
+}
+
+function ViewButton({ record }: any) {
+  return (
+    <ViewAction
+      record={record}
+      option={{
+        width: 460,
+        detailApi: '/User/Get',
+        title: '查看用户',
+        fields: {
+          Name: {
+            isFillLine: true,
+            rules: [{ required: true, message: '请输入姓名' }],
+            label: '姓名',
+            component: 'Input',
+            labelCol: { span: 5 }
+          },
+          CreateTime: {
+            isFillLine: true,
+            component: 'Input',
+            label: '创建时间',
+            labelCol: { span: 5 }
+          }
+        }
+      }}
+      actionCom={({ onAction }) => <a onClick={onAction}>查看</a>}
     />
   );
 }
