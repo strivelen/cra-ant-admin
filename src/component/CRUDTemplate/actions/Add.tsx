@@ -4,7 +4,7 @@ import axios from 'util/axios';
 import { CRUDTemplateContext } from '../CRUDTemplate';
 import { useAppSelector } from 'app/hooks';
 import { selectLoading } from 'features/loading/loadingSlice';
-import RenderFieldsConfig from 'component/RenderFieldsConfig';
+import RenderFieldsConfig, { Fields } from 'component/RenderFieldsConfig';
 const { success } = message;
 
 interface AddModalProps {
@@ -12,7 +12,7 @@ interface AddModalProps {
   visible: boolean;
   onCancel(): void;
   onOk(): void;
-  fields: any;
+  fields: Fields;
   submitApi: string;
   width?: number;
 }

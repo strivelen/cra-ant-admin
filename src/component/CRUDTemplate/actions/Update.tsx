@@ -9,7 +9,7 @@ import {
 import { Form, Modal, message } from 'antd';
 import axios from 'util/axios';
 import { CRUDTemplateContext } from '../CRUDTemplate';
-import RenderFieldsConfig from 'component/RenderFieldsConfig';
+import RenderFieldsConfig, { Fields } from 'component/RenderFieldsConfig';
 import { useAppSelector } from 'app/hooks';
 import { selectLoading } from 'features/loading/loadingSlice';
 
@@ -24,7 +24,7 @@ interface UpdateModalProps {
   visible: boolean;
   onCancel(): void;
   onOk(): void;
-  fields: any;
+  fields: Fields;
   detailApi: string;
   submitApi: string;
   width?: number;

@@ -1,4 +1,4 @@
-import { Row, Col, ColProps, Form } from 'antd';
+import { Row, Col, ColProps, Form, FormItemProps } from 'antd';
 import * as formItems from 'component/FormItem';
 const FormItem = Form.Item;
 
@@ -8,16 +8,17 @@ type ComPropsType = {
   [key in FormItemsKeys]: ComponentProps<typeof formItems[key]>;
 };
 
-interface FieldsOption {
+interface FieldsOption extends FormItemProps {
   component: FormItemsKeys;
-  componentProps: ComPropsType[FormItemsKeys];
-  isFillLine: boolean;
-  col: ColProps;
-  [propName: string]: any;
+  componentProps?: ComPropsType[FormItemsKeys];
+  isFillLine?: boolean;
+  col?: ColProps;
 }
 
+export type Fields = { [propName: string]: FieldsOption };
+
 interface RenderFieldsProps {
-  fields: { [propName: string]: FieldsOption };
+  fields: Fields;
   defaultProps?: ComPropsType[FormItemsKeys];
 }
 

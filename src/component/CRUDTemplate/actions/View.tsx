@@ -1,7 +1,7 @@
 import { useImperativeHandle, forwardRef, useState, useRef, Ref } from 'react';
 import { Form, Modal, message } from 'antd';
 import axios from 'util/axios';
-import RenderFieldsConfig from 'component/RenderFieldsConfig';
+import RenderFieldsConfig, { Fields } from 'component/RenderFieldsConfig';
 const { warning } = message;
 
 interface RefViewModalProps {
@@ -13,7 +13,7 @@ interface ViewModalProps {
   onCancel(): void;
   title: string;
   detailApi: string;
-  fields: any;
+  fields: Fields;
   width?: number;
 }
 
