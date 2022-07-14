@@ -39,15 +39,15 @@ export function confirmDelete({
 
 export default function DeleteAction({
   record,
-  modalOption,
+  option,
   actionCom
 }: ActionProps<ConfirmDeleteProps>) {
   const { refTable } = useContext(CRUDTemplateContext);
   const cb = () => refTable?.current?.onRefresh(false);
   const onShowModal = () =>
     confirmDelete({
-      ...modalOption,
-      params: modalOption.params || { ID: record.ID },
+      ...option,
+      params: option.params || { ID: record.ID },
       cb
     });
   return actionCom && actionCom({ onShowModal });

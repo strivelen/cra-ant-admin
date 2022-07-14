@@ -69,7 +69,7 @@ export default function Home() {
         return (
           <>
             <AddAction
-              modalOption={{
+              option={{
                 title: '新增用户',
                 submitApi: '/User/Add',
                 fields: {
@@ -102,7 +102,7 @@ function DeleteButton({ record }: any) {
   return (
     <DeleteAction
       record={record}
-      modalOption={{
+      option={{
         title: '确定要删除此用户吗？',
         submitApi: '/User/Delete'
       }}
@@ -115,7 +115,7 @@ function UpdateButton({ record }: any) {
   return (
     <UpdateAction
       record={record}
-      modalOption={{
+      option={{
         detailApi: '/User/Get',
         title: '修改用户2',
         submitApi: '/User/Add',

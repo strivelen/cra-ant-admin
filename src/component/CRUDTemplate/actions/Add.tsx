@@ -64,7 +64,7 @@ export function AddModal({
 }
 
 export default function AddAction({
-  modalOption,
+  option,
   actionCom
 }: ActionProps<AddModalProps>) {
   const [visible, setVisible] = useState(false);
@@ -74,7 +74,7 @@ export default function AddAction({
     <>
       {typeof actionCom === 'function' && actionCom({ onShowModal })}
       <AddModal
-        {...modalOption}
+        {...option}
         visible={visible}
         onCancel={() => setVisible(false)}
         onOk={() => {

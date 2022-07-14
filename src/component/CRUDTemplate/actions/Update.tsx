@@ -102,7 +102,7 @@ const NewUpdateModal = forwardRef(UpdateModal);
 
 export default function UpdateAction({
   record,
-  modalOption,
+  option,
   actionCom
 }: ActionProps<UpdateModalProps>) {
   const { refTable } = useContext(CRUDTemplateContext);
@@ -118,7 +118,7 @@ export default function UpdateAction({
     <>
       {typeof actionCom === 'function' && actionCom({ onShowModal })}
       <NewUpdateModal
-        {...modalOption}
+        {...option}
         ref={refUpdateModal}
         visible={visible}
         onCancel={() => setVisible(false)}
