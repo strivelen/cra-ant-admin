@@ -8,3 +8,4 @@ export { default as Password } from './Password';
 export { default as TextArea } from './TextArea';
 export { default as Radio, RadioGroup } from './Radio';
 export { default as Select } from './Select';
+export { default as Upload } from './Upload';

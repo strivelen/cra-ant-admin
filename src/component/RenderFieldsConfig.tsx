@@ -1,4 +1,5 @@
 import { Row, Col, ColProps, Form, FormItemProps } from 'antd';
+import { UploadChangeParam } from 'antd/lib/upload';
 import * as formItems from 'component/FormItem';
 const FormItem = Form.Item;
 
@@ -15,10 +16,10 @@ interface FieldsOption extends FormItemProps {
   col?: ColProps;
 }
 
-export type Fields = { [propName: string]: FieldsOption };
+export type FieldsType = { [propName: string]: FieldsOption };
 
 interface RenderFieldsProps {
-  fields: Fields;
+  fields: FieldsType;
   defaultProps?: ComPropsType[FormItemsKeys];
 }
 
@@ -56,10 +57,17 @@ export default function Fields({
           isFillLine,
           ...formItemProps
         } = fields[item];
+        const publicFormItemProps = generateSpecialFormItemProps(comName);
+
         const Com = formItems[comName] as any;
         if (formItemProps.hidden) {
           return (
-            <FormItem key={item} name={item} {...formItemProps}>
+            <FormItem
+              key={item}
+              name={item}
+              {...publicFormItemProps}
+              {...formItemProps}
+            >
               <Com {...defaultProps} {...componentProps} />
             </FormItem>
           );
@@ -71,6 +79,7 @@ export default function Fields({
                 name={item}
                 labelCol={{ span: 3 }}
                 wrapperCol={{ span: 21 }}
+                {...publicFormItemProps}
                 {...formItemProps}
               >
                 <Com {...defaultProps} {...componentProps} />
@@ -80,7 +89,12 @@ export default function Fields({
         }
         return (
           <Col key={item} span={12} {...col}>
-            <FormItem name={item} {...colSpan} {...formItemProps}>
+            <FormItem
+              name={item}
+              {...colSpan}
+              {...publicFormItemProps}
+              {...formItemProps}
+            >
               <Com {...defaultProps} {...componentProps} />
             </FormItem>
           </Col>
@@ -88,4 +102,20 @@ export default function Fields({
       })}
     </Row>
   );
+}
+
+function generateSpecialFormItemProps(componentString: FormItemsKeys) {
+  let props = {};
+  if (componentString === 'Upload') {
+    props = {
+      valuePropName: 'fileList',
+      getValueFromEvent: (e: UploadChangeParam) => {
+        if (Array.isArray(e)) {
+          return e;
+        }
+        return e?.fileList;
+      }
+    };
+  }
+  return props;
 }

@@ -1,10 +1,11 @@
 import { useState, useContext } from 'react';
-import { Form, Modal, message } from 'antd';
+import { Form, Modal, message, UploadProps } from 'antd';
 import axios from 'util/axios';
 import { CRUDTemplateContext } from '../CRUDTemplate';
 import { useAppSelector } from 'app/hooks';
 import { selectLoading } from 'features/loading/loadingSlice';
-import RenderFieldsConfig, { Fields } from 'component/RenderFieldsConfig';
+import RenderFieldsConfig, { FieldsType } from 'component/RenderFieldsConfig';
+import { mapFileListToApiFileFields } from 'component/FormItem/Upload';
 const { success } = message;
 
 interface AddModalProps {
@@ -12,7 +13,7 @@ interface AddModalProps {
   visible: boolean;
   onCancel(): void;
   onOk(): void;
-  fields: Fields;
+  fields: FieldsType;
   submitApi: string;
   width?: number;
 }
@@ -27,10 +28,17 @@ export function AddModal({
   width = 960
 }: AddModalProps) {
   const loading = useAppSelector(selectLoading);
+  const fieldKeys: string[] = Object.keys(fields);
   const [form] = Form.useForm();
 
   // 提交
   const onFinish = async (values: object) => {
+    const fileFields = fieldKeys.find(
+      (field) => fields[field].component === 'Upload'
+    ) as keyof typeof values;
+    values[fileFields] = mapFileListToApiFileFields(
+      values[fileFields] as UploadProps['fileList']
+    );
     await axios.post(submitApi, { ...values });
     success('新增成功');
     onCancel();

@@ -1,7 +1,8 @@
 import { useImperativeHandle, forwardRef, useState, useRef, Ref } from 'react';
 import { Form, Modal, message } from 'antd';
 import axios from 'util/axios';
-import RenderFieldsConfig, { Fields } from 'component/RenderFieldsConfig';
+import RenderFieldsConfig, { FieldsType } from 'component/RenderFieldsConfig';
+import { mapApiFileFieldsToFileList } from 'component/FormItem/Upload';
 const { warning } = message;
 
 interface RefViewModalProps {
@@ -13,7 +14,7 @@ interface ViewModalProps {
   onCancel(): void;
   title: string;
   detailApi: string;
-  fields: Fields;
+  fields: FieldsType;
   width?: number;
 }
 
@@ -44,7 +45,11 @@ function ViewModal(
     const data: any = await axios.post(detailApi, { ID: record.ID });
     const defaultData = {} as { [propName: string]: string };
     fieldKeys.forEach((item) => {
-      defaultData[item] = data[item];
+      let value = data[item];
+      if (fields[item].component === 'Upload') {
+        value = mapApiFileFieldsToFileList(data[item]);
+      }
+      defaultData[item] = value;
     });
     form.setFieldsValue(defaultData);
   };

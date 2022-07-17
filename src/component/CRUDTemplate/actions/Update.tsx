@@ -6,12 +6,16 @@ import {
   useRef,
   useContext
 } from 'react';
-import { Form, Modal, message } from 'antd';
+import { Form, Modal, message, UploadProps } from 'antd';
 import axios from 'util/axios';
 import { CRUDTemplateContext } from '../CRUDTemplate';
-import RenderFieldsConfig, { Fields } from 'component/RenderFieldsConfig';
+import RenderFieldsConfig, { FieldsType } from 'component/RenderFieldsConfig';
 import { useAppSelector } from 'app/hooks';
 import { selectLoading } from 'features/loading/loadingSlice';
+import {
+  mapApiFileFieldsToFileList,
+  mapFileListToApiFileFields
+} from 'component/FormItem/Upload';
 
 interface RefUpdateModalProps {
   getDefaultData(record: object): void;
@@ -24,7 +28,7 @@ interface UpdateModalProps {
   visible: boolean;
   onCancel(): void;
   onOk(): void;
-  fields: Fields;
+  fields: FieldsType;
   detailApi: string;
   submitApi: string;
   width?: number;
@@ -56,7 +60,11 @@ function UpdateModal(
     const data: any = await axios.post(detailApi, { ID: record.ID });
     const defaultData = {} as { [propName: string]: string };
     fieldKeys.forEach((item) => {
-      defaultData[item] = data[item];
+      let value = data[item];
+      if (fields[item].component === 'Upload') {
+        value = mapApiFileFieldsToFileList(data[item]);
+      }
+      defaultData[item] = value;
     });
     form.setFieldsValue(defaultData);
   };
@@ -67,6 +75,12 @@ function UpdateModal(
 
   // 提交
   const onFinish = async (values: object) => {
+    const fileFields = fieldKeys.find(
+      (field) => fields[field].component === 'Upload'
+    ) as keyof typeof values;
+    values[fileFields] = mapFileListToApiFileFields(
+      values[fileFields] as UploadProps['fileList']
+    );
     await axios.post(submitApi, values);
     success('修改成功');
     onCancel();

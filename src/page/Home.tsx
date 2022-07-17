@@ -81,12 +81,33 @@ export default function Home() {
                   Name: {
                     rules: [{ required: true, message: '请输入姓名' }],
                     label: '姓名',
-                    component: 'Input'
+                    component: 'Input',
+                    initialValue: '张三'
                   },
                   CreateTime: {
                     // isFillLine: true,
                     component: 'Input',
-                    label: '创建时间'
+                    label: '创建时间',
+                    initialValue: ''
+                  },
+                  FileUpload: {
+                    isFillLine: true,
+                    // labelCol: { span: 5 },
+                    // rules: [{ required: true, message: '请上传文件' }],
+                    component: 'Upload',
+                    componentProps: {
+                      action: '',
+                      listType: 'picture'
+                    },
+                    label: '文件上传',
+                    initialValue: [
+                      {
+                        uid: '-1',
+                        name: 'test.png',
+                        status: 'done',
+                        url: 'https://i.picsum.photos/id/866/536/354.jpg?hmac=tGofDTV7tl2rprappPzKFiZ9vDh5MKj39oa2D--gqhA'
+                      }
+                    ]
                   }
                 }
               }}
@@ -153,6 +174,17 @@ function UpdateButton({ record }: any) {
             component: 'Input',
             label: '创建时间',
             labelCol: { span: 5 }
+          },
+          FileUpload: {
+            isFillLine: true,
+            labelCol: { span: 5 },
+            // rules: [{ required: true, message: '请上传文件' }],
+            component: 'Upload',
+            componentProps: {
+              action: '',
+              listType: 'picture'
+            },
+            label: '文件上传'
           }
         }
       }}
