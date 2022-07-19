@@ -9,10 +9,11 @@ import {
 } from 'react-router-dom';
 import { Menu } from 'antd';
 import { useMenuData, useOpenKeysState } from 'hooks/useMenu';
-import Config, { MenuItem } from 'app/config';
+import { MenuItem } from 'app/config';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
 import { useAppDispatch } from 'app/hooks';
 import { setBreadcrumb } from 'features/layout/layoutSlice';
+import { routes } from 'app/routes';
 
 export default function LayoutMenu() {
   const dispatch = useAppDispatch();
@@ -142,8 +143,8 @@ function getSelectKeys(expandMenuList: MenuItem[], location: Location): string {
   );
   if (!currentMenuItemConfig) {
     // 此分支是为了处理菜单路由使用的是动态路由的情况
-    const routes = matchRoutes(Config.routes, location);
-    const routeModel = routes
+    const _routes = matchRoutes(routes, location);
+    const routeModel = _routes
       ?.reduce(
         (model, { route }) =>
           `${model}${route.path === '/' ? '' : '/'}${route.path}`,

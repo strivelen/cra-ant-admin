@@ -1,34 +1,45 @@
-import { FC, Suspense } from 'react';
+import { FC, Suspense, lazy } from 'react';
 import { useRoutes } from 'react-router-dom';
-import routes from 'util/generateRoutes';
+import type { RouteObject } from 'react-router-dom';
 import Loading from 'component/Loading';
 
-// const Layout = lazy(() => import('component/Layout'));
-// const Home = lazy(() => import('page/Home'));
-// const Login = lazy(() => import('page/Login'));
-// const NotFound = lazy(() => import('page/404'));
+const Layout = lazy(() => import('component/Layout'));
+const Home = lazy(() => import('page/Home'));
+const Login = lazy(() => import('page/Login'));
+const NotFound = lazy(() => import('page/404'));
+const List = lazy(() => import('page/List'));
 
-// let routes: RouteObject[] = [
-//   {
-//     path: '/',
-//     element: <Layout />,
-//     children: [
-//       { index: true, element: <Home /> },
-//       {
-//         path: '/home',
-//         element: <Home />
-//       }
-//     ]
-//   },
-//   {
-//     path: '/login',
-//     element: <Login />
-//   },
-//   {
-//     path: '*',
-//     element: <NotFound />
-//   }
-// ];
+export const routes: RouteObject[] = [
+  {
+    path: '/',
+    element: <Layout />,
+    children: [
+      { index: true, element: <Home /> },
+      {
+        path: '/home',
+        element: <Home />
+      },
+      {
+        path: 'list',
+        element: <List />,
+        children: [
+          {
+            path: ':id',
+            element: <List />
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/login',
+    element: <Login />
+  },
+  {
+    path: '*',
+    element: <NotFound />
+  }
+];
 
 const Routes: FC = () => {
   let element = useRoutes(routes);
