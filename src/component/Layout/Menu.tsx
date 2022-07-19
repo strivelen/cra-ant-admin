@@ -35,6 +35,7 @@ export default function LayoutMenu() {
       setselectedKeys(menuStatus.selectKeys);
       onOpenChange(menuStatus.openKeys);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menuData]);
 
   useEffect(() => {
@@ -57,6 +58,7 @@ export default function LayoutMenu() {
     ) as MenuItem;
     const breadcrumb = [...breadcrumbPath, breadcrumbFouces.Name];
     dispatch(setBreadcrumb(breadcrumb));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedKeys]);
 
   return (
