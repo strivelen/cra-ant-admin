@@ -46,11 +46,16 @@ export const userSlice = createSlice({
         state.isLogin = false;
       })
       .addCase(PURGE, (state) => {
-        state = {
-          userinfo: {} as User,
-          token: undefined,
-          isLogin: false
-        };
+        // 不能用这种赋值为一个新对象的方式更新state，因为state是一个Immutable对象。
+        // state = {
+        //   userinfo: {} as User,
+        //   token: undefined,
+        //   isLogin: false
+        // };
+        // 可以用这种方式更新
+        state.userinfo = {} as User;
+        state.token = undefined;
+        state.isLogin = false;
       });
   }
 });
