@@ -3,6 +3,7 @@ import { useRoutes } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 import Loading from 'component/Loading';
 
+const RequireAuth = lazy(() => import('component/RequireAuth'));
 const Layout = lazy(() => import('component/Layout'));
 const Home = lazy(() => import('page/Home'));
 const Login = lazy(() => import('page/Login'));
@@ -11,21 +12,26 @@ const List = lazy(() => import('page/List'));
 
 export const routes: RouteObject[] = [
   {
-    path: '/',
-    element: <Layout />,
+    element: <RequireAuth />,
     children: [
-      { index: true, element: <Home /> },
       {
-        path: '/home',
-        element: <Home />
-      },
-      {
-        path: 'list',
-        element: <List />,
+        path: '/',
+        element: <Layout />,
         children: [
+          { index: true, element: <Home /> },
           {
-            path: ':id',
-            element: <List />
+            path: 'home',
+            element: <Home />
+          },
+          {
+            path: 'list',
+            element: <List />,
+            children: [
+              {
+                path: ':id',
+                element: <List />
+              }
+            ]
           }
         ]
       }

@@ -1,16 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from 'app/store';
-import { fetchLogin, LoginParams, User } from 'api/User';
+import { fetchLogin, LoginParams, UserInfo } from 'api/User';
 import { PURGE } from 'redux-persist';
 
 export interface UserState {
-  userinfo: User;
+  userInfo: UserInfo;
   token: string | undefined;
   isLogin: boolean;
 }
 
 const initialState: UserState = {
-  userinfo: {} as User,
+  userInfo: {} as UserInfo,
   token: undefined,
   isLogin: false
 };
@@ -35,12 +35,10 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
-        const { User, SessionKey } = action.payload;
-        state = {
-          userinfo: User,
-          token: SessionKey,
-          isLogin: true
-        };
+        const { UserInfo, SessionKey } = action.payload;
+        state.userInfo = UserInfo;
+        state.token = SessionKey;
+        state.isLogin = true;
       })
       .addCase(login.rejected, (state) => {
         state.isLogin = false;
@@ -48,12 +46,12 @@ export const userSlice = createSlice({
       .addCase(PURGE, (state) => {
         // 不能用这种赋值为一个新对象的方式更新state，因为state是一个Immutable对象。
         // state = {
-        //   userinfo: {} as User,
+        //   userInfo: {} as User,
         //   token: undefined,
         //   isLogin: false
         // };
         // 可以用这种方式更新
-        state.userinfo = {} as User;
+        state.userInfo = {} as UserInfo;
         state.token = undefined;
         state.isLogin = false;
       });
@@ -63,6 +61,6 @@ export const userSlice = createSlice({
 export const { setToken } = userSlice.actions;
 
 export const selectToken = (state: RootState) => state.user.token;
-export const selectUserInfo = (state: RootState) => state.user.userinfo;
+export const selectUserInfo = (state: RootState) => state.user.userInfo;
 
 export default userSlice.reducer;

@@ -1,10 +1,11 @@
 import { FC, FormEvent, FormEventHandler, ReactNode } from 'react';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { useAppDispatch } from 'app/hooks';
 import { login } from 'features/user/userSlice';
 import Config from 'app/config';
 import styles from './login.module.less';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 interface Container {
   children: ReactNode;
@@ -26,14 +27,24 @@ const LoginFormItem: FC<FormItem> = ({ icon, children }) => {
 };
 
 const LoginForm: FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const prev_page_location = location.state as typeof location;
   const dispatch = useAppDispatch();
-  const onSubmit: FormEventHandler = (e: FormEvent) => {
+
+  const onSubmit: FormEventHandler = async (e: FormEvent) => {
     e.preventDefault();
     const login_form = document.getElementById('login_form') as HTMLFormElement;
     const formData = new FormData(login_form);
-    const user = formData.get('user') as string;
+    const username = formData.get('username') as string;
     const password = formData.get('password') as string;
-    dispatch(login({ email: user, password }));
+    await dispatch(login({ username, password })).unwrap(); // return originalPromiseResult
+    message.success('登录成功');
+    navigate(
+      prev_page_location
+        ? prev_page_location.pathname + prev_page_location.search
+        : '/'
+    );
   };
 
   return (
@@ -43,11 +54,17 @@ const LoginForm: FC = () => {
           autoComplete="off"
           type="text"
           placeholder="请输入用户名"
-          name="user"
+          name="username"
+          value={'admin'}
         />
       </LoginFormItem>
       <LoginFormItem icon={<UnlockOutlined className={styles.icon} />}>
-        <input type="password" placeholder="请输入密码" name="password" />
+        <input
+          type="password"
+          placeholder="请输入密码"
+          name="password"
+          value={'123456'}
+        />
       </LoginFormItem>
       {/* <div className={styles.forgot_password}>忘记密码？</div> */}
       <Button type="primary" htmlType="submit" className={styles.submit}>
