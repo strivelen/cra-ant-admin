@@ -6,6 +6,7 @@ import { useAppSelector } from 'app/hooks';
 import { selectLoading } from 'features/loading/loadingSlice';
 import RenderFieldsConfig, { FieldsType } from 'component/RenderFieldsConfig';
 import { mapFileListToApiFileFields } from 'component/FormItem/Upload';
+import { getApiTypesValue } from 'util/utils';
 const { success } = message;
 
 interface AddModalProps {
@@ -14,7 +15,7 @@ interface AddModalProps {
   onCancel(): void;
   onOk(): void;
   fields: FieldsType;
-  submitApi: string;
+  submitApi: Api;
   width?: number;
 }
 
@@ -39,7 +40,8 @@ export function AddModal({
     values[fileFields] = mapFileListToApiFileFields(
       values[fileFields] as UploadProps['fileList']
     );
-    await axios.post(submitApi, { ...values });
+    const { url, params } = getApiTypesValue(submitApi);
+    await axios.post(url, { ...params, ...values });
     success('新增成功');
     onCancel();
     onOk();
