@@ -31,7 +31,7 @@ interface UpdateModalProps {
   onOk(): void;
   fields: FieldsType;
   detailApi: Api;
-  submitApi: string;
+  submitApi: Api;
   width?: number;
 }
 
@@ -83,7 +83,8 @@ function UpdateModal(
     values[fileFields] = mapFileListToApiFileFields(
       values[fileFields] as UploadProps['fileList']
     );
-    await axios.post(submitApi, values);
+    const { url, params } = getApiTypesValue(submitApi);
+    await axios.post(url, { ...params, ...values });
     success('修改成功');
     onCancel();
     onOk();
