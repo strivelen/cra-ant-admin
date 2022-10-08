@@ -39,3 +39,5 @@ interface ActionProps<ModalProps> {
   actionCom(p: ActionComProps): ReactNode;
   [propName: string]: any;
 }
+
+type Api = string | { url: string; params?: object };

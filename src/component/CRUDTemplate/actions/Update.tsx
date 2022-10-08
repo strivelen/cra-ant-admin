@@ -16,6 +16,7 @@ import {
   mapApiFileFieldsToFileList,
   mapFileListToApiFileFields
 } from 'component/FormItem/Upload';
+import { getApiTypesValue } from 'util/utils';
 
 interface RefUpdateModalProps {
   getDefaultData(record: object): void;
@@ -29,7 +30,7 @@ interface UpdateModalProps {
   onCancel(): void;
   onOk(): void;
   fields: FieldsType;
-  detailApi: string;
+  detailApi: Api;
   submitApi: string;
   width?: number;
 }
@@ -57,7 +58,8 @@ function UpdateModal(
     if (!detailApi) {
       return warning('请配置参数：detailApi');
     }
-    const data: any = await axios.post(detailApi, { ID: record.ID });
+    const { url, params } = getApiTypesValue(detailApi);
+    const data: any = await axios.post(url, { ...params, ID: record.ID });
     const defaultData = {} as { [propName: string]: string };
     fieldKeys.forEach((item) => {
       let value = data[item];

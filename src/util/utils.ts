@@ -131,3 +131,20 @@ export function handleLongText(text, length, icon) {
     ? text.slice(0, length) + (icon || '...')
     : text;
 }
+
+/**
+ * 处理Api类型取值
+ * @param {Api} api
+ * @return
+ **/
+export function getApiTypesValue(api: Api) {
+  let url: string, params: object;
+  if (typeof api === 'string') {
+    url = api;
+  }
+  if (typeof api === 'object') {
+    url = api.url;
+    params = api.params || {};
+  }
+  return { url, params };
+}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { message, TablePaginationConfig } from 'antd';
 import { fetchList } from 'api/_public';
 import config from 'app/config';
+import { getApiTypesValue } from 'util/utils';
 
 type TablePaginationPosition =
   | 'topLeft'
@@ -15,7 +16,7 @@ export type OnFilter = (filterFields: object) => void;
 export type OnRefresh = (isToPageOne: boolean) => void;
 
 export interface UseTableParams {
-  api: string;
+  api: Api;
   initFilterValue?: object;
   isPagination?: boolean;
   pagerLocation?: TablePaginationPosition[];
@@ -104,7 +105,9 @@ function useTable({
       if (!api) {
         return message.warning('缺少参数: api');
       }
-      const data = await fetchList(api, {
+      const { url, params } = getApiTypesValue(api);
+      const data = await fetchList(url, {
+        ...params,
         ...paginationParams,
         ...filterParams
       });
