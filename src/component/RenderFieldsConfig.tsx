@@ -117,5 +117,10 @@ function generateSpecialFormItemProps(componentString: FormItemsKeys) {
       }
     };
   }
+  if (componentString === 'SingleImgUpload') {
+    props = {
+      valuePropName: 'imageUrl'
+    };
+  }
   return props;
 }
