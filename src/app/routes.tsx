@@ -9,6 +9,11 @@ const Home = lazy(() => import('page/Home'));
 const Login = lazy(() => import('page/Login'));
 const NotFound = lazy(() => import('page/404'));
 const List = lazy(() => import('page/List'));
+const Components = lazy(() => import('page/Components'));
+const CRUDTemplate = lazy(() => import('page/CRUDTemplate'));
+const Filter = lazy(() => import('page/Filter'));
+const Table = lazy(() => import('page/Table'));
+const CustomBreadcrumb = lazy(() => import('page/CustomBreadcrumb'));
 
 export const routes: RouteObject[] = [
   {
@@ -31,6 +36,17 @@ export const routes: RouteObject[] = [
                 path: ':id',
                 element: <List />
               }
+            ]
+          },
+          {
+            path: 'components',
+            element: <Components />,
+            children: [
+              { index: true, element: <Components /> },
+              { path: 'crudTemplate', element: <CRUDTemplate /> },
+              { path: 'filter', element: <Filter /> },
+              { path: 'table', element: <Table /> },
+              { path: 'customBreadcrumb', element: <CustomBreadcrumb /> }
             ]
           }
         ]
