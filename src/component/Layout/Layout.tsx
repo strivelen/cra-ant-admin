@@ -5,6 +5,7 @@ import LayoutMenu from './Menu';
 import LayoutHeader from './Header';
 import Loading from 'component/Loading';
 import { useAppSelector } from 'app/hooks';
+import Config from 'app/config';
 const { Sider, Content, Footer } = Layout;
 
 export default function AdminLayout() {
@@ -26,7 +27,9 @@ export default function AdminLayout() {
             top: 0
           }}
         >
-          <div className="logo" />
+          <div className="logo">
+            <p className="logo_text">{collapsed ? 'Logo' : Config.appName}</p>
+          </div>
           <LayoutMenu />
         </div>
       </Sider>

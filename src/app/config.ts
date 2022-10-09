@@ -1,9 +1,11 @@
 import { Pathname } from 'react-router-dom';
 
 const config: Config = {
-  appName: 'Admin Name',
+  appName: '后台管理系统',
   apiHosts:
     'https://www.fastmock.site/mock/d6f0134049a0e22b01d7aae6fafc9045/api',
+  // apiHosts: 'https://debug.baidu.com/api',
+  // apiHosts: 'https://release.baidu.com/api',
   apiTimeout: 30000,
   apiSessionKey: 'psyweb-sessionkey',
   pageSize: 20,

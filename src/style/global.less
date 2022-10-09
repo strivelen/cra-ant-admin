@@ -20,6 +20,44 @@ input {
   height: 32px;
   margin: 16px;
   background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+@keyframes bgp {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+.logo_text {
+  white-space: nowrap;
+  margin-bottom: 0;
+  text-align: center;
+  line-height: 32px;
+  font-size: 17px;
+  list-style-type: none;
+  font-weight: bold;
+  background-image: linear-gradient(
+    to right,
+    red,
+    orange,
+    #0a98d2,
+    #1ffdc4,
+    #0a98d2,
+    orange,
+    red,
+    orange,
+    #0a98d2,
+    #1ffdc4,
+    #0a98d2,
+    orange,
+    red
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-size: 200% 100%;
+  animation: bgp 8s infinite linear;
 }
 
 .site-layout {
