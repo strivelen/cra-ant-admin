@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import {
   handleHttpStatusCodeEffect,
   HttpStatusCode,
@@ -10,7 +10,7 @@ import { selectToken } from 'features/user/userSlice';
 import { store } from 'app/store';
 import { message } from 'antd';
 
-export interface ResponseData<DataContent> {
+interface DTOModel<DataContent = any> {
   Code: HttpStatusCode;
   Data: DataContent;
   Message: string | undefined;
@@ -40,18 +40,39 @@ axios.interceptors.request.use(
 
 // 响应拦截器 - 错误处理 & 关闭loading
 axios.interceptors.response.use(
-  function (response) {
+  function (response: AxiosResponse<DTOModel>) {
     tryHideFullScreenLoading();
     const { data, headers } = response;
+    if (headers['content-type'].indexOf('application/json') === -1) {
+      return response;
+    }
     if (data?.Code !== 200) {
       handleHttpStatusCodeEffect(data?.Code, data?.Message);
       return Promise.reject(data?.Message);
     }
-    if (headers['content-type'] === 'application/octet-stream') {
+    return data.Data;
+  },
+  function (error) {
+    tryHideFullScreenLoading();
+    error.name === 'AxiosError' && message.error(error.message);
+    // console.log('response错误: ', error.toJSON());
+    return Promise.reject(error);
+  }
+);
+
+// 响应拦截器 - 处理Blob数据
+axios.interceptors.response.use(
+  function (response) {
+    if (
+      response.status &&
+      response.headers &&
+      response.headers['content-type'] === 'application/octet-stream'
+    ) {
+      const { data, headers } = response;
       const filename = headers['content-disposition'].split('=')[1];
       return { blob: data, filename };
     }
-    return data.Data;
+    return response;
   },
   function (error) {
     tryHideFullScreenLoading();
