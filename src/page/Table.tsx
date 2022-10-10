@@ -39,6 +39,7 @@ export default function TableTest() {
             title: '操作',
             key: 'action',
             render: (text, record, index) => {
+              // eslint-disable-next-line jsx-a11y/anchor-is-valid
               return <a onClick={() => console.log('自定义事件')}>查看</a>;
             }
           }
