@@ -44,6 +44,7 @@ export default function LayoutMenu() {
       setselectedKeys(menuStatus.selectKeys);
       menuStatus.openKeys.length > 0 && onOpenChange(menuStatus.openKeys);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   useEffect(() => {

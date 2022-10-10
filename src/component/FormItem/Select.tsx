@@ -23,6 +23,7 @@ export default function Select({
         setEnum(data.map((item) => ({ label: item.Value, value: item.Key })));
       }
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

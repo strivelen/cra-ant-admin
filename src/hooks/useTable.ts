@@ -130,6 +130,7 @@ function useTable({
     } else {
       setIsDefaultInit(true);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     pagination.current,
     pagination.pageSize,
