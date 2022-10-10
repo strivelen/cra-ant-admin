@@ -39,6 +39,14 @@ export default function LayoutMenu() {
   }, [menuData]);
 
   useEffect(() => {
+    if (expandMenuDataRef.current.length > 0) {
+      const menuStatus = getMenuStatus(expandMenuDataRef.current, location);
+      setselectedKeys(menuStatus.selectKeys);
+      menuStatus.openKeys.length > 0 && onOpenChange(menuStatus.openKeys);
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
     // 自动渲染 breadcrumb
     if (!selectedKeys || selectedKeys.length === 0) {
       return;
