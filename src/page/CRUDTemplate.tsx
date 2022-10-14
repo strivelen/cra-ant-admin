@@ -24,7 +24,7 @@ export default function PageCRUDTemplate() {
         />
       </div>
       <CRUDTemplate
-        queryFieldsConfig={[
+        queryFields={[
           {
             label: '测试',
             fields: 'Name',

@@ -8,13 +8,13 @@ interface CRUDTemplateContextProps {
 
 export const CRUDTemplateContext = createContext<CRUDTemplateContextProps>({});
 interface CRUDTemplateProps {
-  queryFieldsConfig: FieldsConfig[];
+  queryFields: FieldsConfig[];
   tableConfig: TableConfig;
   actions?: FilterChildren;
 }
 
 export default function CRUDTemplate({
-  queryFieldsConfig,
+  queryFields,
   tableConfig,
   actions
 }: CRUDTemplateProps) {
@@ -28,7 +28,7 @@ export default function CRUDTemplate({
     <CRUDTemplateContext.Provider value={{ refTable }}>
       <Filter
         ref={refFilter}
-        fieldsConfig={queryFieldsConfig}
+        fieldsConfig={queryFields}
         onSubmit={(filterValue) => refTable.current?.onFilter(filterValue)}
       >
         {actions}
