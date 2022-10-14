@@ -7,7 +7,7 @@ interface CRUDTemplateContextProps {
 }
 
 export const CRUDTemplateContext = createContext<CRUDTemplateContextProps>({});
-interface CURDTemplateProps {
+interface CRUDTemplateProps {
   queryFieldsConfig: FieldsConfig[];
   tableConfig: TableConfig;
   actions?: FilterChildren;
@@ -17,7 +17,7 @@ export default function CRUDTemplate({
   queryFieldsConfig,
   tableConfig,
   actions
-}: CURDTemplateProps) {
+}: CRUDTemplateProps) {
   const refFilter = useRef<RefFilterType>(null);
   const refTable = useRef<RefTableType>(null);
   useEffect(() => {
